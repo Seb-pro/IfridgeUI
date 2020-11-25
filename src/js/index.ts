@@ -1,29 +1,65 @@
-const app = new Vue({
-    el:'#app',
-    data:{
-      cats:[],
-      currentSort:'name',
+import axios, {
+  AxiosError
+} from "../../node_modules/axios/index"
+
+interface IGrocery{
+  "barcode": number,
+  "wareName": string,
+  "category": string,
+  "expiration": number,
+  "weight": number,
+  "picture": string
+  
+}
+
+let baseUrl = 'http://ifridgeapi.azurewebsites.net/api/Waretypes';
+
+new Vue({
+  el: "#app",
+  data: {
+      groceries: [],
+      formData: {barcode: undefined, wareName: "", categori: "", expiration: undefined, weight: undefined, picture: "" },
+      currentSort:'wareName',
       currentSortDir:'asc'
-    },
-    created:function() {
-      fetch('https://www.raymondcamden.com/.netlify/functions/get-cats')
-      .then(res => res.json())
-      .then(res => {
-        this.cats = res;
-      })
-    },
-    methods:{
+  },
+  methods: {
+
+               
+       async add(){
+          axios.post<IGrocery>(baseUrl, this.formData)
+      },
+    
+    
+      async getAllGroceriesAsync() {
+          try { return axios.get<IGrocery[]>(baseUrl) }
+          catch (error: AxiosError) {
+              this.message = error.message;
+              alert(error.message)
+          }
+      },
+
+      async getAllGroceries() {
+          let response = await this.getAllGroceriesAsync();
+          this.groceries = response.data;
+      },
+
+      clearList() {
+          this.groceries = [];
+      },
+
       sort:function(s) {
-        //if s == current sort, reverse
-        if(s === this.currentSort) {
-          this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
-        }
-        this.currentSort = s;
-      }
-    },
-    computed:{
-      sortedCats:function() {
-        return this.cats.sort((a,b) => {
+          //if s == current sort, reverse
+          if(s === this.currentSort) {
+            this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+          }
+          this.currentSort = s;
+        },
+      
+  },
+
+  computed:{
+      sortedGroceries:function() {
+        return this.groceries.sort((a,b) => {
           let modifier = 1;
           if(this.currentSortDir === 'desc') modifier = -1;
           if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
@@ -32,4 +68,4 @@ const app = new Vue({
         });
       }
     }
-  })
+})

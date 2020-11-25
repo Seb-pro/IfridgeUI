@@ -3,44 +3,89 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!--ovenfor tilføjet--->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css" integrity="sha384-nEnU7Ae+3lD52AK+RGNzgieBWMnEfgTbRHIwEvp1XXPdqdO6uLTd/NwXbzboqjc2" crossorigin="anonymous">
 
-  <title>Hello app</title>
+  <title>IFridge</title>
 </head>
 
 <body>
-  <h1>Categori sorting</h1>
+  <div class="jumbotron">
+    <h1>Welcome to IFridge</h1>
+  </div>
   <div id="app">
-   
-   <table>
-     <thead>
-       <tr>
-         <th @click="sort('name')">Name</th>
-         <th @click="sort('age')">Age</th>
-         <th @click="sort('breed')">Breed</th>
-         <th @click="sort('gender')">Gender</th>
-       </tr>
-     </thead>
+    <div class="panel panel-primary">
+      <div class="panel-heading">Input new grocery</div>
+      <!--vi har brug for denne klasse "panel panel-primary" for at få fat med Axios-->
+      <div class="panel-body">
+        <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()"> 
+          <div class="form-group">
+            <br>
+            <input type="number" class="form-control" v-model.number="formData.barcode" placeholder="Barcode #">
+            <input type="text" class="form-control" v-model="formData.wareName" placeholder="Name">
+            <input type="text" class="form-control" v-model="formData.categori" placeholder="Categori">
+            <input type="number" class="form-control" v-model.number="formData.expiration" placeholder="Expiration Date">
+            <input type="number" class="form-control" v-model.number="formData.weight" placeholder="Weight">
+            <input type="text" class="form-control" v-model="formData.picture" placeholder="Picture">
+          </div>
+          <button class="btn btn-primary">Add to IFridge</button>
+        </form>
+      </div>
+    </div>
+    <br>
+    <div class="panel panel-primary">
+      <div class="panel-heading">Get Inventory from your Fridge</div>
+      <div class="panel-body">
+        <button class="btn btn-primary" v-on:click="getAllGroceries()">Get Inventory</button>
+        <button class="btn btn-warning" v-on:click="clearList">Clear</button><br/>
+        <ul v-if="groceries.length > 0">
+          <li v-for="grocery in groceries">
+            Barcode: {{grocery.barcode}} Name: {{grocery.wareName}} Category: {{grocery.category }} Expiration Date: {{ grocery.expiration}} Weight: {{ grocery.weight}} Picture: {{ grocery.picture}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  <div class="panel panel-primary">
+        
+    <table>
+       <thead>
+        <tr>
+          <th @click="sort('barcode')">Barcode</th>
+          <th @click="sort('wareName')">Warename</th>
+          <th @click="sort('expiration')">Expiration</th>
+          <th @click="sort('category')">Category</th>
+          <th @click="sort('weight')">Weight</th>
+        </tr>
+      </thead>
      <tbody>
-       <tr v-for="cat in sortedCats">
-         <td>{{cat.name}}</td>
-         <td>{{cat.age}}</td>
-         <td>{{cat.breed}}</td>
-         <td>{{cat.gender}}</td>
-       </tr>
-     </tbody>
-   </table>
-   
-   debug: sort={{currentSort}}, dir={{currentSortDir}}
- </div>
-
+        <tr v-for="groceries in sortedGroceries">
+          <td>{{groceries.barcode}}</td>
+          <td>{{groceries.wareName}}</td>
+          <td>{{groceries.expiration}}</td>
+          <td>{{groceries.category}}</td>
+          <td>{{groceries.weight}}</td>
+          <td>{{groceries.picture}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  <button v-on:click="getAllGroceries()">Update List</button>
+  debug: sort={{currentSort}}, dir={{currentSortDir}}
+    </div>
+  </div> 
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+ 
   <script src="bundle.js"></script>
 </body>
 
