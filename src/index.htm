@@ -31,14 +31,14 @@
         <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()"> 
           <div class="form-group">
             <br>
-            <input type="number" class="form-control" v-model.number="formData.barcode" placeholder="Barcode #">
-            <input type="text" class="form-control" v-model="formData.wareName" placeholder="Name">
-            <input type="text" class="form-control" v-model="formData.categori" placeholder="Categori">
-            <input type="number" class="form-control" v-model.number="formData.expiration" placeholder="Expiration Date">
-            <input type="number" class="form-control" v-model.number="formData.weight" placeholder="Weight">
-            <input type="text" class="form-control" v-model="formData.picture" placeholder="Picture">
+            <input id="barcodeInput" type="number" class="form-control" v-model.number="formData.barcode" placeholder="Barcode #">
+            <input id="nameInput" type="text" class="form-control" v-model="formData.wareName" placeholder="Name">
+            <input id="categoriInput" type="text" class="form-control" v-model="formData.categori" placeholder="Categori">
+            <input id="expirationDateInput" type="number" class="form-control" v-model.number="formData.expiration" placeholder="Expiration Date">
+            <input id="weightInput" type="number" class="form-control" v-model.number="formData.weight" placeholder="Weight">
+            <input id="pictureInput" type="text" class="form-control" v-model="formData.picture" placeholder="Picture">
           </div>
-          <button class="btn btn-primary">Add to IFridge</button>
+          <button id="add" class="btn btn-primary">Add to IFridge</button>
         </form>
       </div>
     </div>
@@ -46,8 +46,8 @@
     <div class="panel panel-primary">
       <div class="panel-heading">Get Inventory from your Fridge</div>
       <div class="panel-body">
-        <button class="btn btn-primary" v-on:click="getAllGroceries()">Get Inventory</button>
-        <button class="btn btn-warning" v-on:click="clearList">Clear</button><br/>
+        <button id= "getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get Inventory</button>
+        <button id= "clearButton" class="btn btn-warning" v-on:click="clearList">Clear</button><br/>
         <ul v-if="groceries.length > 0">
           <li v-for="grocery in groceries">
             Barcode: {{grocery.barcode}} Name: {{grocery.wareName}} Category: {{grocery.category }} Expiration Date: {{ grocery.expiration}} Weight: {{ grocery.weight}} Picture: {{ grocery.picture}}
@@ -60,11 +60,11 @@
     <table>
        <thead>
         <tr>
-          <th @click="sort('barcode')">Barcode</th>
-          <th @click="sort('wareName')">Warename</th>
-          <th @click="sort('expiration')">Expiration</th>
-          <th @click="sort('category')">Category</th>
-          <th @click="sort('weight')">Weight</th>
+          <th id="barcodeButton" @click="sort('barcode')">Barcode</th>
+          <th id="wareNameButton" @click="sort('wareName')">Warename</th>
+          <th id="expirationDateButton" @click="sort('expiration')">Expiration</th>
+          <th id="categoryButton" @click="sort('category')">Category</th>
+          <th id="weightButton" @click="sort('weight')">Weight</th>
         </tr>
       </thead>
      <tbody>
@@ -79,7 +79,7 @@
         </tr>
       </tbody>
     </table>
-  <button v-on:click="getAllGroceries()">Update List</button>
+  <button id="getAllGroceriesButton" v-on:click="getAllGroceries()">Update List</button>
   debug: sort={{currentSort}}, dir={{currentSortDir}}
     </div>
   </div> 
