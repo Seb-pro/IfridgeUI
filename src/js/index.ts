@@ -12,7 +12,7 @@ interface IGrocery{
   
 }
 
-let baseUrl = 'http://ifridgeapi.azurewebsites.net/api/Waretypes';
+let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/Waretypes';
 
 new Vue({
   el: "#app",
