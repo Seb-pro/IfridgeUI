@@ -19,7 +19,7 @@ new Vue({
   data: {
       groceries: [],
       formData: {barcode: undefined, wareName: "", categori: "", expiration: undefined, weight: undefined, picture: "" },
-      currentSort:'wareName',
+      currentSort:'expiration',
       currentSortDir:'asc'
   },
   methods: {

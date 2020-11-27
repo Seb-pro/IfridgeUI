@@ -69,10 +69,10 @@
       </thead>
      <tbody>
         <tr v-for="groceries in sortedGroceries">
-          <td class="barcodeNumber">{{groceries.barcode}}</td>
+          <td>{{groceries.barcode}}</td>
           <td>{{groceries.wareName}}</td>
           <td>{{groceries.expiration}}</td>
-          <td>{{groceries.category}}</td>
+          <td class="categoryList">{{groceries.category}}</td>
           <td>{{groceries.weight}}</td>
           <td>{{groceries.picture}}</td>
           <td></td>
