@@ -68,13 +68,13 @@
         </tr>
       </thead>
      <tbody>
-        <tr v-for="groceries in sortedGroceries">
-          <td>{{groceries.barcode}}</td>
-          <td>{{groceries.wareName}}</td>
-          <td>{{groceries.expiration}}</td>
-          <td class="categoryList">{{groceries.category}}</td>
-          <td>{{groceries.weight}}</td>
-          <td>{{groceries.picture}}</td>
+        <tr v-for="product in sortedGroceries" v-on:click="Selected(product)" class="highlight">
+          <td>{{product.barcode}}</td>
+          <td>{{product.wareName}}</td>
+          <td>{{product.expiration}}</td>
+          <td class="categoryList">{{product.category}}</td>
+          <td>{{product.weight}}</td>
+          <td>{{product.picture}}</td>
           <td></td>
         </tr>
      </tbody>

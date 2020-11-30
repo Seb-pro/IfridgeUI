@@ -19,6 +19,7 @@ new Vue({
   data: {
       groceries: [],
       formData: {barcode: undefined, wareName: "", categori: "", expiration: undefined, weight: undefined, picture: "" },
+      product: false,
       currentSort:'expiration',
       currentSortDir:'asc'
   },
@@ -45,6 +46,9 @@ new Vue({
 
       clearList() {
           this.groceries = [];
+      },
+      Selected(product: any){
+        this.product = true;
       },
 
       sort:function(s) {
