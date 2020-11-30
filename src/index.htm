@@ -43,45 +43,35 @@
       </div>
     </div>
     <br>
-    <div class="panel panel-primary">
-      <div class="panel-heading">Get Inventory from your Fridge</div>
-      <div class="panel-body">
-        <button id= "getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get Inventory</button>
-        <button id= "clearButton" class="btn btn-warning" v-on:click="clearList">Clear</button><br/>
-        <ul v-if="groceries.length > 0">
-          <li v-for="grocery in groceries">
-            Barcode: {{grocery.barcode}} Name: {{grocery.wareName}} Category: {{grocery.category }} Expiration Date: {{ grocery.expiration}} Weight: {{ grocery.weight}} Picture: {{ grocery.picture}}
-          </li>
-        </ul>
-      </div>
-    </div>
+
   <div class="panel panel-primary">
         
-    <table>
+    <table id="Table1">
        <thead>
         <tr>
           <th id="barcodeButton" @click="sort('barcode')">Barcode</th>
-          <th id="wareNameButton" @click="sort('wareName')">Warename</th>
-          <th id="expirationDateButton" @click="sort('expiration')">Expiration</th>
-          <th id="categoryButton" @click="sort('category')">Category</th>
+          <th id="wareNameButton" v-on:click="sort('product.productName')">product name</th>
+          <th id="expirationDateButton" @click="sort('product.expiration')">Expiration</th>
+          <th id="categoryButton" @click="sort('categoryName')">Category</th>
           <th id="weightButton" @click="sort('weight')">Weight</th>
         </tr>
       </thead>
      <tbody>
-        <tr v-for="product in sortedGroceries" v-on:click="Selected(product)" class="highlight">
-          <td>{{product.barcode}}</td>
-          <td>{{product.wareName}}</td>
-          <td>{{product.expiration}}</td>
-          <td class="categoryList">{{product.category}}</td>
-          <td>{{product.weight}}</td>
-          <td>{{product.picture}}</td>
-          <td></td>
+        <tr id = "TableRows" v-for="grocery in sortedGroceries">
+          <td class="barcodeList">{{grocery.barcode}}</td>
+          <td class="nameList">{{grocery.product.productName}}</td>
+          <td class="expirationList">{{grocery.product.expiration}}</td>
+          <td class="categoryList">{{grocery.product.Category}}</td>
+          <td class="weightList">{{grocery.product.weight}}</td>
+          <!-- <td>{{groceries.product.}}</td>
+          <td>{{groceries.product.}}</td> -->
+          <td class="pictureList">{{grocery.product.picture}}</td>
+          <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(deleteId)">Delete</button></td>
         </tr>
      </tbody>
     </table>
-  <button id="updateButton" v-on:click="getAllGroceries()">Update List</button>
-  debug: sort={{currentSort}}, dir={{currentSortDir}}
-    </div>
+  <button id="updateButton" v-on:click="getAllGroceries()">Get List</button>
+  </div>
   </div> 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
