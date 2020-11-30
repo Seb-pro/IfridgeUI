@@ -20,16 +20,22 @@ new Vue({
       groceries: [],
       formData: {barcode: undefined, wareName: "", categori: "", expiration: undefined, weight: undefined, picture: "" },
       currentSort:'expiration',
-      currentSortDir:'asc'
+      currentSortDir:'asc',
+      
   },
   methods: {
-
+        
                
-       async add(){
+        async add(){
           axios.post<IGrocery>(baseUrl, this.formData)
       },
     
-    
+     async showPic(){
+      if (groeries.experiation <2) {
+        
+      }
+     }, 
+
       async getAllGroceriesAsync() {
           try { return axios.get<IGrocery[]>(baseUrl) }
           catch (error: AxiosError) {

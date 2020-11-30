@@ -75,7 +75,11 @@
           <td class="categoryList">{{groceries.category}}</td>
           <td>{{groceries.weight}}</td>
           <td>{{groceries.picture}}</td>
-          <td></td>
+          <div>
+            <td v-if="show" id="expirationPic"> <img src="/pictures/Trash.jpg" alt="Trash"></td>
+            <td v-else> Varen er stadig god </td>
+          </div>
+          
         </tr>
      </tbody>
     </table>
