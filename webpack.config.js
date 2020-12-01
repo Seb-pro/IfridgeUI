@@ -9,7 +9,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
  
 module.exports = {
   // which files should webpack watch and transpile
-  entry: ['./src/index.htm',  './src/js/index.ts'],
+  entry: ['./src/index.htm',  './src/js/index.ts', './src/scss/styles.scss'],
   module: {
     // rules webpack should follow when watching...
     rules: [
@@ -18,6 +18,10 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
+    },
+    {
+      test: /\.(s*)css$/,
+      use: [{ loader: 'file-loader', options: { name: 'bundle.css' } }, 'extract-loader', 'css-loader', 'sass-loader']
     },
     {
       // html files will be copied to the dist folder
@@ -34,7 +38,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: [ '.tsx', '.ts', '.js', '.scss' ]
   },
   output: {
     publicPath: '/dist/',

@@ -41,13 +41,18 @@ new Vue({
       index: 0
   },
   methods: {
-
+        
                
-       async add(){
+        async add(){
           axios.post<IGrocery>(baseUrl, this.formData)
       },
     
-    
+     async showPic(){
+      if (groeries.experiation <2) {
+        
+      }
+     }, 
+
       async getAllGroceriesAsync() {
           try { return axios.get<IGrocery[]>(baseUrl) }
           catch (error: AxiosError) {
