@@ -11,12 +11,13 @@ h2 {
 
 h1 {
   @extend h2;
-  
 }
 
-.highlight {
-  background-color: red;
+td,
+th {
+  padding: 5px;
 }
-tr:hover {
+
+th {
   cursor: pointer;
 }
