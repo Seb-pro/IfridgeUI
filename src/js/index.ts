@@ -28,16 +28,17 @@ interface IGrocery{
   
 }
 
-let baseUrl = 'https://ifridgeapi.azurewebsites.net//api/ProductInstances';
+let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
 
 new Vue({
   el: "#app",
   data: {
       groceries: [],
       formData: {productInstanceId: 0, barcode: undefined, productName: "", categoryName: "", expiration: undefined, weight: undefined, picture: "" },
-      currentSort:'expiration',
+      currentSort:'name',
       currentSortDir:'asc',
-      deleteId: 0
+      deleteMessage: "",
+      index: 0
   },
   methods: {
 
@@ -70,8 +71,8 @@ new Vue({
 
       // },
 
-    deleteRow(deleteId: number){
-      let url: string = baseUrl + "/" + deleteId
+    deleteRow(index: any){
+      let url: string = baseUrl +"/"+ index
       axios.delete<void>(url)
       .then((response: AxiosResponse<void>)=>{
         this.deleteMessage = response.status + " " + response.statusText

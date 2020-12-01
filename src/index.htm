@@ -50,9 +50,9 @@
        <thead>
         <tr>
           <th id="barcodeButton" @click="sort('barcode')">Barcode</th>
-          <th id="wareNameButton" v-on:click="sort('product.productName')">product name</th>
+          <th id="wareNameButton" v-on:click="sort('productName')">Product</th>
           <th id="expirationDateButton" @click="sort('product.expiration')">Expiration</th>
-          <th id="categoryButton" @click="sort('categoryName')">Category</th>
+          <th id="categoryButton" @click="sort('subCategory.category.categoryName')">Category</th>
           <th id="weightButton" @click="sort('weight')">Weight</th>
         </tr>
       </thead>
@@ -61,12 +61,10 @@
           <td class="barcodeList">{{grocery.barcode}}</td>
           <td class="nameList">{{grocery.product.productName}}</td>
           <td class="expirationList">{{grocery.product.expiration}}</td>
-          <td class="categoryList">{{grocery.product.Category}}</td>
+          <td class="categoryList">{{grocery.product.subCategory.category.categoryName}}</td>
           <td class="weightList">{{grocery.product.weight}}</td>
-          <!-- <td>{{groceries.product.}}</td>
-          <td>{{groceries.product.}}</td> -->
           <td class="pictureList">{{grocery.product.picture}}</td>
-          <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(deleteId)">Delete</button></td>
+          <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(grocery.productInstanceId)">Delete</button></td>
         </tr>
      </tbody>
     </table>
