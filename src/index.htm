@@ -52,10 +52,11 @@
        <thead>
         <tr>
           <th id="barcodeButton" @click="sort('barcode')">Barcode</th>
-          <th id="wareNameButton" v-on:click="sort('productName')">Product</th>
-          <th id="expirationDateButton" @click="sort('product.expiration')">Expiration</th>
-          <th id="categoryButton" @click="sort('subCategory.category.categoryName')">Category</th>
-          <th id="weightButton" @click="sort('weight')">Weight</th>
+          <th @click="sort('product.productName')">Product</th>
+          <th @click="sort('product.expiration')">Expiration</th>
+          <th @click="sort('subCategory.category.categoryName')">Category</th>
+          <th @click="sort('weight')">Weight</th>
+          <th @click="sort('product.picture')">Picture</th>
         </tr>
       </thead>
      <tbody>
@@ -66,19 +67,15 @@
           <td class="categoryList">{{grocery.product.subCategory.category.categoryName}}</td>
           <td class="weightList">{{grocery.product.weight}}</td>
           <td class="pictureList">{{grocery.product.picture}}</td>
-<<<<<<< HEAD
-          <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(grocery.productInstanceId)">Delete</button></td>
-=======
           <div>
             <td v-if="show" id="expirationPic"> <img src="/pictures/Trash.jpg" alt="Trash"></td>
             <td v-else> Varen er stadig god </td>
           </div>
-          <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(deleteId)">Delete</button></td>
->>>>>>> 9423b9c97da43ba471948f2d46a3512fda8f4d93
+          <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(grocery.productInstanceId)">Delete</button></td>
         </tr>
      </tbody>
     </table>
-  <button id="updateButton" v-on:click="getAllGroceries()">Get List</button>
+  <button id="getAllButton" v-on:click="getAllGroceries()">Get List</button>
   </div>
   </div> 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

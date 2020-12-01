@@ -69,13 +69,6 @@ new Vue({
       clearList() {
           this.groceries = [];
       },
-
-      // async deleteRow(){
-      //   let response = await this.deleteRowAsync()
-      //   this.groceries = response.data;
-
-      // },
-
     deleteRow(index: any){
       let url: string = baseUrl +"/"+ index
       axios.delete<void>(url)
