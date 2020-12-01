@@ -1,27 +1,43 @@
 import axios, {
-  AxiosError
+  AxiosError, AxiosResponse
 } from "../../node_modules/axios/index"
 
 interface IGrocery{
-  "barcode": number,
-  "wareName": string,
-  "category": string,
-  "expiration": number,
-  "weight": number,
-  "picture": string
+  productInstanceId: number,
+  ownerId: number,
+  barcode: number,
+  product: {
+    barcode: number,
+    subCategoryId: number,
+    subCategory: {
+      subCategoryId: number,
+      categoryId: number,
+      category: {
+        categoryId: number,
+        categoryName: string
+      },
+      subCategoryName: string,
+      isFluid: true
+    },
+    productName: string,
+    expiration: number,
+    weight: number,
+    picture: string
+  },
+  dateAdded: VarDate
   
 }
 
-let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/Waretypes';
+let baseUrl = 'https://ifridgeapi.azurewebsites.net//api/ProductInstances';
 
 new Vue({
   el: "#app",
   data: {
       groceries: [],
-      formData: {barcode: undefined, wareName: "", categori: "", expiration: undefined, weight: undefined, picture: "" },
+      formData: {productInstanceId: 0, barcode: undefined, productName: "", categoryName: "", expiration: undefined, weight: undefined, picture: "" },
       currentSort:'expiration',
       currentSortDir:'asc',
-      
+      deleteId: 0
   },
   methods: {
         
@@ -53,19 +69,34 @@ new Vue({
           this.groceries = [];
       },
 
-      sort:function(s) {
+      // async deleteRow(){
+      //   let response = await this.deleteRowAsync()
+      //   this.groceries = response.data;
+
+      // },
+
+    deleteRow(deleteId: number){
+      let url: string = baseUrl + "/" + deleteId
+      axios.delete<void>(url)
+      .then((response: AxiosResponse<void>)=>{
+        this.deleteMessage = response.status + " " + response.statusText
+        this.getAllGroceries()
+      })
+      .catch((error: AxiosError)=>{
+        alert(error.message)
+      })
+    },
+    sort:function(s: any) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
             this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
           }
           this.currentSort = s;
-        },
-      
-  },
-
-  computed:{
+        },      
+      },
+      computed:{
       sortedGroceries:function() {
-        return this.groceries.sort((a,b) => {
+        return this.groceries.sort((a: any,b: any) => {
           let modifier = 1;
           if(this.currentSortDir === 'desc') modifier = -1;
           if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
