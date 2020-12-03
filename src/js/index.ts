@@ -39,23 +39,26 @@ new Vue({
       currentSort:'name',
       currentSortDir:'asc',
       deleteMessage: "",
-      index: 0
+      index: 0,
+      expireWarning: false
   },
-  
-  methods: {
-    daysToExpirefunc(){
-      this.IGrocery.
-    },
-         
-    async add(){
-        axios.post<IGrocery>(baseUrl, this.formData)
-    },
+  methods:{
+      daysToExpirefunc(list: Array<IGrocery>){
+        for (var i = 0; i < list.length; i++)
+        {
+          let daysInFridge = this.IGrocery.dateAdded - Date.now();
+          this.IGrocery.daysToExpire = daysInFridge - this.IGrocery.experiation;
+          if (this.IGrocery.daysToExpire < 9)
+          {
+            this.IGrocery.expireWarning = true;
+          }
+        }  
+      },
     
-     async showPic(){
-      if (this.groceries.product.experiation <2) {
-      
-      }
-     }, 
+      async add(){
+        axios.post<IGrocery>(baseUrl, this.formData)
+      },    
+     
 
       async getAllGroceriesAsync() {
           try { return axios.get<IGrocery[]>(baseUrl) }
@@ -80,44 +83,45 @@ new Vue({
 
       // },
 
-    deleteRow(index: any){
+      deleteRow(index: any){
       let url: string = baseUrl +"/"+ index
       axios.delete<void>(url)
-      .then((response: AxiosResponse<void>)=>{
+        .then((response: AxiosResponse<void>)=>{
         this.deleteMessage = response.status + " " + response.statusText
         this.getAllGroceries()
-      })
-      .catch((error: AxiosError)=>{
+        })
+        .catch((error: AxiosError)=>{
         alert(error.message)
-      })
-    },
-    sort:function(s: any) {
+        })
+      },
+      sort:function(s: any) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
             this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
           }
           this.currentSort = s;
-        }      
+      },      
     
-  },
-      computed:{
-      expireWarningFunc:function(){
-        if (this.grocery.product.expiration <= 4) {
-          return this.grocery.product.expireWarning = true;
-        }
-        else
+    },
+  computed:{
+    expireWarningFunc:function(){
+      if (this.grocery.product.expiration <= 4) {
+        return this.grocery.product.expireWarning = true;
+      }
+      else
         {
-          return this.grocery.product.expireWarning = false;
+        return this.grocery.product.expireWarning = false;
         }
       },
       sortedGroceries:function() {
         return this.groceries.sort((a: any,b: any) => {
-          let modifier = 1;
-          if(this.currentSortDir === 'desc') modifier = -1;
-          if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-          return 0;
+        let modifier = 1;
+        if(this.currentSortDir === 'desc') modifier = -1;
+        if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
         });
       }
-    }
+  }
+  
 })
