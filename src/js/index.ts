@@ -134,15 +134,14 @@ new Vue({
 
      daysToExpirefunc(list:IGrocery[]){
 
-        // let today: Date = new Date;
-        // list.forEach(function(element) {
-        //   element.expireWarning = true;
-          // let timeInFridge = element.dateAdded
-          // let timeInFridge = new Date (element.dateAdded).getTime() - today.getTime();
-          // let daysInFridge = timeInFridge / (1000*3600*24);
-          // element.daysToExpire = element.product.expiration - daysInFridge;
-          // element.expireWarning = element.daysToExpire < 3;
-        // });
+        let today: Date = new Date;
+        list.forEach(function(element) {
+          element.expireWarning = true;
+          let timeInFridge = today.getTime() - new Date (element.dateAdded).getTime();
+          let daysInFridge = timeInFridge / (1000*3600*24);
+          element.daysToExpire = element.product.expiration - daysInFridge;
+          element.expireWarning = element.daysToExpire < 3;
+        });
         return list;        
       },
     
@@ -157,7 +156,6 @@ new Vue({
 
       async getAllGroceries() {
           let response = await this.getAllGroceriesAsync();
-          // this.groceries = response.data;
           this.groceries = this.daysToExpirefunc(response.data);
       },
 
