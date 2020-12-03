@@ -25,7 +25,7 @@ interface IGrocery{
     weight: number,
     picture: string
   },
-  dateAdded: VarDate,
+  dateAdded: Date,
   expireWarning: boolean,
   daysToExpire: number
 }
@@ -87,7 +87,6 @@ new Vue({
 
  
   methods: {
-
     
     async getProductsAsync() {
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
@@ -126,23 +125,28 @@ new Vue({
          
     },
 
-
-    /*
-    daysToExpirefunc(){
-      this.IGrocery.
-    },
-    */    
+   
     async add(){
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
         axios.post<IProduct>(url, this.formData)
     },
-    
-     async showPic(){
-      if (this.groceries.product.experiation <2) {
-      
-      }
-     }, 
+ 
 
+     daysToExpirefunc(list:IGrocery[]){
+
+        // let today: Date = new Date;
+        // list.forEach(function(element) {
+        //   element.expireWarning = true;
+          // let timeInFridge = element.dateAdded
+          // let timeInFridge = new Date (element.dateAdded).getTime() - today.getTime();
+          // let daysInFridge = timeInFridge / (1000*3600*24);
+          // element.daysToExpire = element.product.expiration - daysInFridge;
+          // element.expireWarning = element.daysToExpire < 3;
+        // });
+        return list;        
+      },
+    
+    
       async getAllGroceriesAsync() {
           try { return axios.get<IGrocery[]>(baseUrl) }
           catch (error: AxiosError) {
@@ -153,57 +157,54 @@ new Vue({
 
       async getAllGroceries() {
           let response = await this.getAllGroceriesAsync();
-          this.groceries = response.data;
+          // this.groceries = response.data;
+          this.groceries = this.daysToExpirefunc(response.data);
       },
 
       clearList() {
           this.groceries = [];
-      },
+      },     
 
-      // async deleteRow(){
-      //   let response = await this.deleteRowAsync()
-      //   this.groceries = response.data;
-
-      // },
-
-    deleteRow(index: any){
+      deleteRow(index: any){
       let url: string = baseUrl +"/"+ index
       axios.delete<void>(url)
-      .then((response: AxiosResponse<void>)=>{
+        .then((response: AxiosResponse<void>)=>{
         this.deleteMessage = response.status + " " + response.statusText
         this.getAllGroceries()
-      })
-      .catch((error: AxiosError)=>{
+        })
+        .catch((error: AxiosError)=>{
         alert(error.message)
-      })
-    },
-    sort:function(s: any) {
+        })
+      },
+
+      sort:function(s: any) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
             this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
           }
           this.currentSort = s;
-        }      
+      },      
     
-  },
-      computed:{
+    },
+    computed:{
       expireWarningFunc:function(){
         if (this.grocery.product.expiration <= 4) {
           return this.grocery.product.expireWarning = true;
         }
         else
-        {
+          {
           return this.grocery.product.expireWarning = false;
-        }
+          }
       },
       sortedGroceries:function() {
         return this.groceries.sort((a: any,b: any) => {
-          let modifier = 1;
-          if(this.currentSortDir === 'desc') modifier = -1;
-          if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-          return 0;
+        let modifier = 1;
+        if(this.currentSortDir === 'desc') modifier = -1;
+        if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
         });
       }
     }
+  
 })
