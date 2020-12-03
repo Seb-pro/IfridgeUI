@@ -52,10 +52,11 @@
        <thead>
         <tr>
           <th id="barcodeButton" @click="sort('barcode')">Barcode</th>
-          <th id="wareNameButton" v-on:click="sort('productName')">Product</th>
-          <th id="expirationDateButton" @click="sort('product.expiration')">Expiration</th>
-          <th id="categoryButton" @click="sort('subCategory.category.categoryName')">Category</th>
-          <th id="weightButton" @click="sort('weight')">Weight</th>
+          <th @click="sort('product.productName')">Product</th>
+          <th @click="sort('product.expiration')">Expiration</th>
+          <th @click="sort('subCategory.category.categoryName')">Category</th>
+          <th @click="sort('weight')">Weight</th>
+          
         </tr>
       </thead>
      <tbody>
@@ -75,7 +76,7 @@
         </tr>
      </tbody>
     </table>
-  <button id="updateButton" v-on:click="getAllGroceries()">Get List</button>
+  <button id="getAllButton" v-on:click="getAllGroceries()">Get List</button>
   </div>
   </div> 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
