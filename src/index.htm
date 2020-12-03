@@ -60,6 +60,7 @@
           <th @click="sort('dateAdded')">Date added</th>
           <th @click="sort('product.expiration')">Expiration date</th>
           <th @click="sort('product.picture')">Picture</th>
+          <th>Status på varen</th>
         </tr>
       </thead>
      <tbody>
@@ -73,10 +74,10 @@
           <td>{{grocery.dateAdded}}</td>
           <td class="expirationList">{{grocery.product.expiration}}</td>
           <td class="pictureList">{{grocery.product.picture}}</td>
-            <td> 
-              <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png"> 
-              <h6 v-else>Varen er stadig god</h6>  
-            </td>
+          <td> 
+            <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png">
+            <h6 v-else>Varen er stadig god</h6>  
+          </td>
           </div>
           <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(grocery.productInstanceId)">Delete</button></td>
         </tr>
