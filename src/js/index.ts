@@ -24,8 +24,8 @@ interface IGrocery{
     weight: number,
     picture: string
   },
-  dateAdded: VarDate
-  
+  dateAdded: VarDate,
+  expireWarning: boolean
 }
 
 let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
@@ -41,15 +41,15 @@ new Vue({
       index: 0
   },
   methods: {
-        
+    
                
-        async add(){
+      async add(){
           axios.post<IGrocery>(baseUrl, this.formData)
       },
     
      async showPic(){
-      if (groeries.experiation <2) {
-        
+      if (this.groceries.product.experiation <2) {
+      
       }
      }, 
 
@@ -94,8 +94,20 @@ new Vue({
           }
           this.currentSort = s;
         },      
+    expire(grocerylist:[]){
+        this.grocery.
       },
+  },
       computed:{
+      expireWarningFunc:function(){
+        if (this.grocery.product.expiration <= 4) {
+          return this.grocery.product.expireWarning = true;
+        }
+        else
+        {
+          return this.grocery.product.expireWarning = false;
+        }
+      },
       sortedGroceries:function() {
         return this.groceries.sort((a: any,b: any) => {
           let modifier = 1;
