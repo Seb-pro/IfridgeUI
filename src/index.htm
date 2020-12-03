@@ -49,17 +49,7 @@
         </form>
       </div>
     </div>
-    <div>
-      <button id= "getAllProductsButton" class="btn btn-primary" v-on:click="getProducts()">Get All Products</button>
-      <ul v-if="products.length > 0">
-        <li v-for="product in products">
-          Barcode: {{product.barcode}} Sub Category: {{product.subCategoryName}} Name: {{product.productName}} Expiration Date: {{ product.expiration}} Weight: {{ product.weight}} Picture: {{ product.picture}}
-        </li>
-      </ul>
-  </div>
      <br>
-
-
    <div class="panel panel-primary">
         
     <table id="Table1">
@@ -99,6 +89,15 @@
     </table>
   <button id="getAllButton" v-on:click="getAllGroceries()">Get List</button>
   </div>
+  <h1>DEBUG</h1>
+  <div>
+    <button id= "getAllProductsButton" class="btn btn-primary" v-on:click="getProducts()">Get All Products</button>
+    <ul v-if="products.length > 0">
+      <li v-for="product in products">
+        Barcode: {{product.barcode}} Sub Category: {{product.subCategory.subCategoryName}} Name: {{product.productName}} Expiration Date: {{ product.expiration}} Weight: {{ product.weight}} Picture: {{ product.picture}}
+      </li>
+    </ul>
+</div>
   </div> 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
