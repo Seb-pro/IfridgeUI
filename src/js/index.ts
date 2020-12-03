@@ -24,7 +24,7 @@ interface IGrocery{
     weight: number,
     picture: string
   },
-  dateAdded: VarDate,
+  dateAdded: Date,
   expireWarning: boolean,
   daysToExpire: number
 }
@@ -39,20 +39,21 @@ new Vue({
       currentSort:'name',
       currentSortDir:'asc',
       deleteMessage: "",
-      index: 0,
-      expireWarning: false
+      index: 0
   },
   methods:{
-      daysToExpirefunc(list: Array<IGrocery>){
-        for (var i = 0; i < list.length; i++)
-        {
-          let daysInFridge = this.IGrocery.dateAdded - Date.now();
-          this.IGrocery.daysToExpire = daysInFridge - this.IGrocery.experiation;
-          if (this.IGrocery.daysToExpire < 9)
-          {
-            this.IGrocery.expireWarning = true;
-          }
-        }  
+     daysToExpirefunc(list:IGrocery[]){
+
+        // let today: Date = new Date;
+        // list.forEach(function(element) {
+        //   element.expireWarning = true;
+          // let timeInFridge = element.dateAdded
+          // let timeInFridge = new Date (element.dateAdded).getTime() - today.getTime();
+          // let daysInFridge = timeInFridge / (1000*3600*24);
+          // element.daysToExpire = element.product.expiration - daysInFridge;
+          // element.expireWarning = element.daysToExpire < 3;
+        // });
+        return list;        
       },
     
       async add(){
@@ -70,18 +71,13 @@ new Vue({
 
       async getAllGroceries() {
           let response = await this.getAllGroceriesAsync();
-          this.groceries = response.data;
+          // this.groceries = response.data;
+          this.groceries = this.daysToExpirefunc(response.data);
       },
 
       clearList() {
           this.groceries = [];
-      },
-
-      // async deleteRow(){
-      //   let response = await this.deleteRowAsync()
-      //   this.groceries = response.data;
-
-      // },
+      },     
 
       deleteRow(index: any){
       let url: string = baseUrl +"/"+ index
