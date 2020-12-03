@@ -34,8 +34,13 @@
           <div class="form-group">
             <br>
             <input id="barcodeInput" type="number" class="form-control" v-model.number="formData.barcode" placeholder="Barcode #">
-            <input id="nameInput" type="text" class="form-control" v-model="formData.wareName" placeholder="Name">
-            <input id="categoriInput" type="text" class="form-control" v-model="formData.categori" placeholder="Categori">
+            <input id="nameInput" type="text" class="form-control" v-model="formData.productName" placeholder="Name">
+            
+            <select id="subCategoryDropdown" v-model="selectedSubCategory" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
+              <option disabled value="">Please select a Sub Category</option>
+              <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
+            </select>
+            <!--{{formData.subCategoryId}}-->              
             <input id="expirationDateInput" type="number" class="form-control" v-model.number="formData.expiration" placeholder="Expiration Date">
             <input id="weightInput" type="number" class="form-control" v-model.number="formData.weight" placeholder="Weight">
             <input id="pictureInput" type="text" class="form-control" v-model="formData.picture" placeholder="Picture">
@@ -44,9 +49,18 @@
         </form>
       </div>
     </div>
-    <br>
+    <div>
+      <button id= "getAllProductsButton" class="btn btn-primary" v-on:click="getProducts()">Get All Products</button>
+      <ul v-if="products.length > 0">
+        <li v-for="product in products">
+          Barcode: {{product.barcode}} Sub Category: {{product.subCategoryName}} Name: {{product.productName}} Expiration Date: {{ product.expiration}} Weight: {{ product.weight}} Picture: {{ product.picture}}
+        </li>
+      </ul>
+  </div>
+     <br>
 
-  <div class="panel panel-primary">
+
+   <div class="panel panel-primary">
         
     <table id="Table1">
        <thead>
@@ -66,7 +80,7 @@
         <tr id = "TableRows" v-for="grocery in sortedGroceries">
           <td>{{grocery.productInstanceId}}</td>
           <td class="barcodeList">{{grocery.barcode}}</td>
-          <td class="categoryList">{{grocery.product.subCategory.subCategoryName}}</td>
+          <td class="subCategoryList">{{grocery.product.subCategory.subCategoryName}}</td>
           <td>{{grocery.product.subCategory.category.categoryName}}</td>
           <td class="weightList">{{grocery.product.weight}}</td>
           <td class="nameList">{{grocery.product.productName}}</td>

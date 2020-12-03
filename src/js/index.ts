@@ -2,6 +2,7 @@ import axios, {
   AxiosError, AxiosResponse
 } from "../../node_modules/axios/index"
 
+
 interface IGrocery{
   productInstanceId: number,
   ownerId: number,
@@ -29,26 +30,111 @@ interface IGrocery{
   daysToExpire: number
 }
 
+interface ISub{
+    subCategoryId: number,
+    categoryId: number,
+      category: {
+      categoryId: number,
+      categoryName: string
+      },
+    subCategoryName: string,
+    isFluid: true
+  
+}
+
+interface IProduct{
+  barcode: number,
+  subCategoryId: number,
+  subCategory: {
+    subCategoryId: number,
+    categoryId: number,
+    category: {
+      categoryId: number,
+      categoryName: string
+    },
+    subCategoryName: string,
+    isFluid: true
+  },
+  productName: string,
+  expiration: number,
+  weight: number,
+  picture: string
+}
+
 let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
 
 new Vue({
   el: "#app",
+  mounted: function(){
+    this.getSubCategory()
+  },
   data: {
       groceries: [],
-      formData: {productInstanceId: 0, barcode: undefined, productName: "", categoryName: "", expiration: undefined, weight: undefined, picture: "" },
+      formData: {barcode: undefined, subCategoryId: 0, productName: "", expiration: undefined, weight: undefined, picture: "" },
       currentSort:'name',
       currentSortDir:'asc',
       deleteMessage: "",
-      index: 0
+      index: 0,
+      selectedSubCategory: "",
+      subCategories: [],
+      products: []
+
   },
-  
+
+  beforeCreate(){
+    this.getSubCategory()
+  },
+
+ 
   methods: {
+
+    
+    async getProductsAsync() {
+      let url = "https://ifridgeapi.azurewebsites.net/api/Products"
+      try { return axios.get<IProduct[]>(url) }
+      catch (error: AxiosError) {
+          this.message = error.message;
+          alert(error.message)
+      }
+    },
+
+    async getProducts() {
+      let response = await this.getProductsAsync();
+      this.products = response.data;
+    },
+
+    
+    
+    setSubCategoryId(Id: number){
+      this.formData.subCategoryId = Id;
+    },
+  
+    async getSubCategoriesAsync()
+    {
+      let url = "https://ifridgeapi.azurewebsites.net/api/SubCategories"
+      try { return axios.get<ISub[]>(url) }
+      catch (error: AxiosError) {
+          this.message = error.message;
+          alert(error.message)
+      }
+    },
+
+    async getSubCategory()
+    {
+      let response = await this.getSubCategoriesAsync();
+      this.subCategories = response.data;
+         
+    },
+
+
+    /*
     daysToExpirefunc(){
       this.IGrocery.
     },
-         
+    */    
     async add(){
-        axios.post<IGrocery>(baseUrl, this.formData)
+      let url = "https://ifridgeapi.azurewebsites.net/api/Products"
+        axios.post<IProduct>(url, this.formData)
     },
     
      async showPic(){
