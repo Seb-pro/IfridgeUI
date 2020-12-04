@@ -35,12 +35,10 @@
             <br>
             <input id="barcodeInput" type="number" class="form-control" v-model.number="formData.barcode" placeholder="Barcode #">
             <input id="nameInput" type="text" class="form-control" v-model="formData.productName" placeholder="Name">
-            
-            <select id="subCategoryDropdown" v-model="selectedSubCategory" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
+            <select v-model="selectedSubCategory" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
               <option disabled value="">Please select a Sub Category</option>
               <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
-            </select>
-            <!--{{formData.subCategoryId}}-->              
+            </select>         
             <input id="expirationDateInput" type="number" class="form-control" v-model.number="formData.expiration" placeholder="Expiration Date">
             <input id="weightInput" type="number" class="form-control" v-model.number="formData.weight" placeholder="Weight">
             <input id="pictureInput" type="text" class="form-control" v-model="formData.picture" placeholder="Picture">
