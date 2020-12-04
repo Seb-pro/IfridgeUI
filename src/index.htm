@@ -57,12 +57,12 @@
         <tr>
           <th @click="sort('productInstanceId')">productInstanceId</th>
           <th id="barcodeButton" @click="sort('barcode')">Barcode</th>
-          <th @click="sort('productInstanceId.product.subCategory.subCategoryName')">Sub category name</th>
-          <th @click="sort('product.subCategory.category.categoryName')">Category name</th>
+          <th @click="sort('subCategoryName')">Sub category name</th>
+          <th @click="sort('categoryName')">Category name</th>
           <th @click="sort('weight')">Weight</th>
-          <th @click="sort('product.productName')">Product name</th>
+          <th @click="sort('productName')">Product name</th>
           <th @click="sort('dateAdded')">Date added</th>
-          <th @click="sort('product.expiration')">Expiration date</th>
+          <th @click="sort('expiration')">Expiration date</th>
           <th @click="sort('daysToExpire')">Days to expiration</th>
           <th @click="sort('product.picture')">Picture</th>
           <th>Status på varen</th>
@@ -72,10 +72,10 @@
         <tr id = "TableRows" v-for="grocery in sortedGroceries">
           <td>{{grocery.productInstanceId}}</td>
           <td class="barcodeList">{{grocery.barcode}}</td>
-          <td class="subCategoryList">{{grocery.product.subCategory.subCategoryName}}</td>
-          <td>{{grocery.product.subCategory.category.categoryName}}</td>
-          <td class="weightList">{{grocery.product.weight}}</td>
-          <td class="nameList">{{grocery.product.productName}}</td>
+          <td class="subCategoryList">{{grocery.subCategoryName}}</td>
+          <td>{{grocery.categoryName}}</td>
+          <td class="weightList">{{grocery.weight}}</td>
+          <td class="nameList">{{grocery.productName}}</td>
           <td>{{grocery.dateAdded}}</td>
           <td class="expirationList">{{grocery.product.expiration}}</td>
           <td class="expirationList">{{grocery.daysToExpire}}</td>
