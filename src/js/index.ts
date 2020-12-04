@@ -2,6 +2,7 @@ import axios, {
   AxiosError, AxiosResponse
 } from "../../node_modules/axios/index"
 
+
 interface IGrocery{
   productInstanceId: number,
   ownerId: number,
@@ -24,42 +25,127 @@ interface IGrocery{
     weight: number,
     picture: string
   },
-  dateAdded: VarDate,
+  dateAdded: Date,
   expireWarning: boolean,
   daysToExpire: number
+}
+
+interface ISub{
+    subCategoryId: number,
+    categoryId: number,
+      category: {
+      categoryId: number,
+      categoryName: string
+      },
+    subCategoryName: string,
+    isFluid: true
+  
+}
+
+interface IProduct{
+  barcode: number,
+  subCategoryId: number,
+  subCategory: {
+    subCategoryId: number,
+    categoryId: number,
+    category: {
+      categoryId: number,
+      categoryName: string
+    },
+    subCategoryName: string,
+    isFluid: true
+  },
+  productName: string,
+  expiration: number,
+  weight: number,
+  picture: string
 }
 
 let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
 
 new Vue({
   el: "#app",
+  mounted: function(){
+    this.getSubCategory()
+  },
   data: {
       groceries: [],
-      formData: {productInstanceId: 0, barcode: undefined, productName: "", categoryName: "", expiration: undefined, weight: undefined, picture: "" },
+      formData: {barcode: undefined, subCategoryId: 0, productName: "", expiration: undefined, weight: undefined, picture: "" },
       currentSort:'name',
       currentSortDir:'asc',
       deleteMessage: "",
       index: 0,
-      expireWarning: false
+      selectedSubCategory: "",
+      subCategories: [],
+      products: []
+
   },
-  methods:{
-      daysToExpirefunc(list: Array<IGrocery>){
-        for (var i = 0; i < list.length; i++)
-        {
-          let daysInFridge = this.this.dateAdded - Date.now();
-          this.list.daysToExpire = daysInFridge - this.list.experiation;
-          if (this.list.daysToExpire < 2)
-          {
-            this.list.expireWarning = true;
-          }
-        }  
+
+  beforeCreate(){
+    this.getSubCategory()
+  },
+
+ 
+  methods: {
+    
+    async getProductsAsync() {
+      let url = "https://ifridgeapi.azurewebsites.net/api/Products"
+      try { return axios.get<IProduct[]>(url) }
+      catch (error: AxiosError) {
+          this.message = error.message;
+          alert(error.message)
+      }
+    },
+
+    async getProducts() {
+      let response = await this.getProductsAsync();
+      this.products = response.data;
+    },
+
+    
+    
+    setSubCategoryId(Id: number){
+      this.formData.subCategoryId = Id;
+    },
+  
+    async getSubCategoriesAsync()
+    {
+      let url = "https://ifridgeapi.azurewebsites.net/api/SubCategories"
+      try { return axios.get<ISub[]>(url) }
+      catch (error: AxiosError) {
+          this.message = error.message;
+          alert(error.message)
+      }
+    },
+
+    async getSubCategory()
+    {
+      let response = await this.getSubCategoriesAsync();
+      this.subCategories = response.data;
+         
+    },
+
+   
+    async add(){
+      let url = "https://ifridgeapi.azurewebsites.net/api/Products"
+        axios.post<IProduct>(url, this.formData)
+    },
+ 
+
+     daysToExpirefunc(list:IGrocery[]){
+
+        let today: Date = new Date;
+        list.forEach(function(element) {
+          element.expireWarning = true;
+          let timeInFridge = today.getTime() - new Date (element.dateAdded).getTime();
+          let daysInFridge = timeInFridge / (1000*3600*24);
+          element.daysToExpire = element.product.expiration - daysInFridge;
+          element.expireWarning = element.daysToExpire < 3;
+        });
+        return list;        
       },
     
-      async add(){
-        axios.post<IGrocery>(baseUrl, this.formData)
-      },    
-     
-
+    
       async getAllGroceriesAsync() {
           try { return axios.get<IGrocery[]>(baseUrl) }
           catch (error: AxiosError) {
@@ -70,18 +156,12 @@ new Vue({
 
       async getAllGroceries() {
           let response = await this.getAllGroceriesAsync();
-          this.groceries = response.data;
+          this.groceries = this.daysToExpirefunc(response.data);
       },
 
       clearList() {
           this.groceries = [];
-      },
-
-      // async deleteRow(){
-      //   let response = await this.deleteRowAsync()
-      //   this.groceries = response.data;
-
-      // },
+      },     
 
       deleteRow(index: any){
       let url: string = baseUrl +"/"+ index
@@ -94,6 +174,7 @@ new Vue({
         alert(error.message)
         })
       },
+
       sort:function(s: any) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
@@ -114,6 +195,6 @@ new Vue({
         return 0;
         });
       }
-  }
+    }
   
 })
