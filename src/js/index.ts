@@ -46,11 +46,11 @@ new Vue({
       daysToExpirefunc(list: Array<IGrocery>){
         for (var i = 0; i < list.length; i++)
         {
-          let daysInFridge = this.IGrocery.dateAdded - Date.now();
-          this.IGrocery.daysToExpire = daysInFridge - this.IGrocery.experiation;
-          if (this.IGrocery.daysToExpire < 9)
+          let daysInFridge = this.this.dateAdded - Date.now();
+          this.list.daysToExpire = daysInFridge - this.list.experiation;
+          if (this.list.daysToExpire < 2)
           {
-            this.IGrocery.expireWarning = true;
+            this.list.expireWarning = true;
           }
         }  
       },
@@ -101,18 +101,10 @@ new Vue({
           }
           this.currentSort = s;
       },      
-    
+
     },
   computed:{
-    expireWarningFunc:function(){
-      if (this.grocery.product.expiration <= 4) {
-        return this.grocery.product.expireWarning = true;
-      }
-      else
-        {
-        return this.grocery.product.expireWarning = false;
-        }
-      },
+    
       sortedGroceries:function() {
         return this.groceries.sort((a: any,b: any) => {
         let modifier = 1;
