@@ -182,18 +182,10 @@ new Vue({
           }
           this.currentSort = s;
       },      
-    
+
     },
-    computed:{
-      expireWarningFunc:function(){
-        if (this.grocery.product.expiration <= 4) {
-          return this.grocery.product.expireWarning = true;
-        }
-        else
-          {
-          return this.grocery.product.expireWarning = false;
-          }
-      },
+  computed:{
+    
       sortedGroceries:function() {
         return this.groceries.sort((a: any,b: any) => {
         let modifier = 1;
