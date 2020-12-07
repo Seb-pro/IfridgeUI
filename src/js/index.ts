@@ -28,6 +28,10 @@ interface IGrocery{
   dateAdded: Date,
   expireWarning: boolean,
   daysToExpire: number
+  subCategoryName: string,
+  categoryName: string,
+  weight: number,
+  productName: string
 }
 
 interface ISub{
@@ -190,6 +194,11 @@ new Vue({
           let daysInFridge = timeInFridge / (1000*3600*24);
           element.daysToExpire = element.product.expiration - daysInFridge;
           element.expireWarning = element.daysToExpire < 3;
+          //Til sorting
+          element.subCategoryName = element.product.subCategory.subCategoryName;
+          element.categoryName = element.product.subCategory.category.categoryName;
+          element.weight = element.product.weight;
+          element.productName = element.product.productName;
         });
         return list;        
       },
