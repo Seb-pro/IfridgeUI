@@ -97,6 +97,15 @@
       </li>
     </ul>
 </div>
+<div>
+  <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="recipe">
+  <button id= "getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">recipe</button>
+  <ul v-if="recipes.length > 0">
+    <li class="recipeList" id="debugList" v-for="recipe in recipes">
+      recipe: {{recipe.title}}
+    </li>
+  </ul>
+</div>
   </div> 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>

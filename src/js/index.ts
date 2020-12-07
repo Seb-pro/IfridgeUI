@@ -61,6 +61,36 @@ interface IProduct{
   picture: string
 }
 
+interface IRecipeQueryResults{
+  results:[{
+    sourceUrl: string,
+    id: number,
+    title: string,
+    image: string,
+    imageType:string}],
+offset: number,
+number: number,
+totalResults: number
+}
+
+interface ingredientsResponse{
+  ingredients:[{
+      name: string,
+      image: string,
+      amount:{
+          metric:{
+              value: number,
+              unit: string
+          },
+          us:{
+              value: number,
+              unit: string
+          }
+      }
+  }]
+}
+
+
 let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
 
 new Vue({
@@ -71,13 +101,15 @@ new Vue({
   data: {
       groceries: [],
       formData: {barcode: undefined, subCategoryId: 0, productName: "", expiration: undefined, weight: undefined, picture: "" },
+      recipeQuery: "",
       currentSort:'name',
       currentSortDir:'asc',
       deleteMessage: "",
       index: 0,
       selectedSubCategory: "",
       subCategories: [],
-      products: []
+      products: [],
+      recipes: []
 
   },
 
@@ -87,6 +119,23 @@ new Vue({
 
  
   methods: {
+
+    async getRecipesByQueryAsync(query : string){
+      let basisUrl = "https://api.spoonacular.com/recipes/complexSearch?query="
+      //OBS på KEY MAX 150Point per dag
+      let authentication = "&number=10&apiKey=53229e6b540c401ea70d06a40a272b59&addRecipeInformation=true" // Christians
+      //let authentication = "&number=10&apiKey=f41a881d1a3f47ca8de0af384dba58bf&addRecipeInformation=true"  //Majas
+      try{ return axios.get<IRecipeQueryResults>(basisUrl + query + authentication)}
+      catch (error: AxiosError) {
+        this.message = error.message;
+        alert(error.message)
+      }
+    },
+
+    async getRecipesByQuery(query : string){
+      let response = await this.getRecipesByQueryAsync(query);
+      this.recipes = response.data.results;
+    },
     
     async getProductsAsync() {
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
