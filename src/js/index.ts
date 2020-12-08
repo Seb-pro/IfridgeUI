@@ -77,10 +77,11 @@ number: number,
 totalResults: number
 }
 
-interface ingredientsResponse{
+interface IingredientsResponse{
   ingredients:[{
       name: string,
       image: string,
+      fontColor: string,
       amount:{
           metric:{
               value: number,
@@ -113,24 +114,26 @@ new Vue({
       selectedSubCategory: "",
       subCategories: [],
       products: [],
-      recipes: []
+      recipes: [],
+      missingIngredients:[]
+     
 
   },
 
-  beforeCreate(){
-    this.getSubCategory()
-  },
+ //beforeCreate(){
+   // this.getSubCategory()
+  //},
 
  
   methods: {
 
-    async getRecipesByQueryAsync(query : string){
-      let basisUrl = "https://api.spoonacular.com/recipes/complexSearch?query="
-      //OBS på KEY MAX 150Point per dag
-      let authentication = "&number=10&apiKey=53229e6b540c401ea70d06a40a272b59&addRecipeInformation=true" // Christians
-      //let authentication = "&number=10&apiKey=f41a881d1a3f47ca8de0af384dba58bf&addRecipeInformation=true"  //Majas
-      try{ return axios.get<IRecipeQueryResults>(basisUrl + query + authentication)}
-      catch (error: AxiosError) {
+      async getRecipesByQueryAsync(query : string){
+        let basisUrl = "https://api.spoonacular.com/recipes/complexSearch?query="
+        //OBS på KEY MAX 150Point per dag
+        //let authentication = "&number=10&apiKey=53229e6b540c401ea70d06a40a272b59&addRecipeInformation=true" // Christians
+        let authentication = "&number=10&apiKey=f41a881d1a3f47ca8de0af384dba58bf&addRecipeInformation=true"  //Majas
+        try{ return axios.get<IRecipeQueryResults>(basisUrl + query + authentication)}
+        catch (error: AxiosError) {
         this.message = error.message;
         alert(error.message)
       }
@@ -140,6 +143,46 @@ new Vue({
       let response = await this.getRecipesByQueryAsync(query);
       this.recipes = response.data.results;
     },
+
+
+    async getRecipeById(id: number){
+      let urlId = "https://api.spoonacular.com/recipes/"
+      let diffrentAuthentication = "/ingredientWidget.json?apiKey=f41a881d1a3f47ca8de0af384dba58bf"
+      try{ return axios.get<IingredientsResponse>(urlId + id + diffrentAuthentication)}
+        catch (error: AxiosError) {
+        this.message = error.message;
+        alert(error.message)
+      }
+    },
+
+   async BuyIngredient(id: number){
+     //her henter vi ingridienser for opskriften basseret på Id
+     let response1 = await this.getRecipeById(id);
+     let internalList  = response1.data.ingredients;
+      
+      //her henter vi vores liste af varer vi har i køleskabet
+      let response2 = await this.getAllGroceriesAsync();
+      let grocerie = response2.data;
+      //lav en ny liste hvor vi gemmer nye elementer og gennemløber listen af ingridenser her gennem vi elementet hvis det passer på den næste foreach
+      internalList.forEach(function(element: any) {
+        //vi har fat i listen af varer i køleskabet og ønsker at finde varer med subcategori der matcher ingridens navnet
+          grocerie.forEach(function(grocery: any){
+          // hvis der ikke er et match ændres tekst farven fra hvid til rød ellers er den bare hvid
+          if(element.name.toLowerCase().includes(grocery.product.subCategory.subCategoryName.toLowerCase())) {
+            element.fontColor = "FFFFFF"
+          } else {
+            if(element.fontColor != "FFFFFF"){
+              element.fontColor = "FF0000"
+            }
+            
+          }
+       });
+
+      });
+      //her sætter vi vores liste med elementer = med manglende varer listen vi bruger i html'en 
+      this.missingIngredients = internalList
+            
+   }, 
     
     async getProductsAsync() {
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
