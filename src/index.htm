@@ -92,11 +92,12 @@
     <div>
       <div>
         <div class="panel panel-primary">
-          <form class="form-inline" action=""><div>
+          <form class="form-inline" v-on:submit.prevent="addToShopping()"><div>
       <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">
       <input class="form-control" id="itemPlace" v-model="formDataShopping.placetoget" type="text" placeholder="Shop">
       <input class="form-control" id="itemPrice" type="number" v-model.number="formDataShopping.price" placeholder="Price"> 
       <button id="addToShopping" class="btn btn-primary" v-on:click="addToShopping()">Add to Shopping List</button>
+      <button id="GetShoppingList" class="btn btn-primary" v-on:click="getShoppingList()">Update shopping list</button>
     </div>
   </form>
 </div>

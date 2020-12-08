@@ -194,7 +194,13 @@ new Vue({
 
 
     addToShopping(){
-      this.formDataShopping
+      
+      this.shoppingArray.push(this.formDataShopping)
+
+      
+    },
+    getShoppingList(){
+      this.shoppingArray;
     },
  
 
