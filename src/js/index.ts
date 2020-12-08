@@ -193,10 +193,10 @@ new Vue({
     },
 
 
-    addToShopping(){
+    addToShopping(item:any){
       
-      this.shoppingArray.push(this.formDataShopping)
-
+      this.shoppingArray.add(this.formDataShopping)
+      
       
     },
     getShoppingList(){
