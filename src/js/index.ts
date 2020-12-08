@@ -95,6 +95,13 @@ interface IingredientsResponse{
   }]
 }
 
+interface IShopping
+{
+  name: string,
+  placetoget: string,
+  price: number
+}
+
 
 let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
 
@@ -115,9 +122,9 @@ new Vue({
       subCategories: [],
       products: [],
       recipes: [],
-      missingIngredients:[]
-     
-
+      missingIngredients:[],
+      shoppingArray: [],
+      formDataShopping: {name: "", placetoget: "", price: undefined}
   },
 
  //beforeCreate(){
@@ -225,6 +232,17 @@ new Vue({
     async add(){
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
         axios.post<IProduct>(url, this.formData)
+    },
+
+
+    addToShopping(item:any){
+      
+      this.shoppingArray.add(this.formDataShopping)
+      
+      
+    },
+    getShoppingList(){
+      this.shoppingArray;
     },
  
 
