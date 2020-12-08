@@ -92,12 +92,10 @@
     <div>
       <div>
         <div class="panel panel-primary">
-          <form class="form-inline" v-on:submit.prevent="addToShopping()"><div>
-      <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">
-      <input class="form-control" id="itemPlace" v-model="formDataShopping.placetoget" type="text" placeholder="Shop">
-      <input class="form-control" id="itemPrice" type="number" v-model.number="formDataShopping.price" placeholder="Price"> 
-      <button id="addToShopping" class="btn btn-primary" v-on:click="addToShopping()">Add to Shopping List</button>
-      <button id="GetShoppingList" class="btn btn-primary" v-on:click="getShoppingList()">Update shopping list</button>
+         <form class="form-inline" v-on:submit.prevent="addToShopping()"><div>
+          <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">          
+        <button class="btn btn-primary" id="addToShopping">Add to Shopping List</button>
+      <button class="btn btn-primary" id="GetShoppingList" v-on:click="getShoppingList()">get shopping list from recipe</button>
     </div>
   </form>
 </div>
@@ -106,20 +104,20 @@
     
     
     <div>
-    <table id="Table2">
+    <table id="ShoppingListHeadline">
       <thead>
         <tr>
           <th>Item Name</th>
-          <th>Shop</th>
-          <th>Price</th>
+          <th>Amount</th>
+          <th>In Cart</th>
       </tr>
       </thead>
      
       <tbody>
-        <tr id="TableRows2" v-for="item in shoppingArray">
+        <tr id="ShoppingListRows" v-for="item in shoppingCart">
           <td>{{item.name}}</td>
-          <td>{{item.placetoget}}</td>
-          <td>{{item.price}}</td>
+          <td>{{item.amount}}</td>
+          <td>{{item.isInCart}}</td>
       </tr>
       </tbody>
     </table>
@@ -144,6 +142,7 @@
       </div> 
       </li>
     </ul>
+    <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
   </div>
   <br>
   <br>

@@ -95,12 +95,6 @@ interface IingredientsResponse{
   }]
 }
 
-interface IShopping
-{
-  name: string,
-  placetoget: string,
-  price: number
-}
 
 
 let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
@@ -124,7 +118,10 @@ new Vue({
       recipes: [],
       missingIngredients:[],
       shoppingArray: [],
-      formDataShopping: {name: "", placetoget: "", price: undefined}
+      shoppingCart: [],
+      //formDataShopping: {name: "", placetoget: "", price: undefined}
+      formDataShopping: {name: "", amount: 0, isInCart:false}
+         
   },
 
  //beforeCreate(){
@@ -134,7 +131,7 @@ new Vue({
  
   methods: {
 
-      async getRecipesByQueryAsync(query : string){
+    async getRecipesByQueryAsync(query : string){
         let basisUrl = "https://api.spoonacular.com/recipes/complexSearch?query="
         //OBS på KEY MAX 150Point per dag
         //let authentication = "&number=10&apiKey=53229e6b540c401ea70d06a40a272b59&addRecipeInformation=true" // Christians
@@ -188,9 +185,28 @@ new Vue({
       });
       //her sætter vi vores liste med elementer = med manglende varer listen vi bruger i html'en 
       this.missingIngredients = internalList
-            
-   }, 
+    }, 
     
+
+
+
+
+    ///Virker ikke 8/12
+
+    sendToShoppingList(){
+      this.missingIngredients.forEach(function(element : any){
+        if(element.fontColor == "FF0000"){
+        let shoppingItem: any = {
+          name: element.name, 
+          amount: element.amount.metric.value, 
+          isInCart: false
+        }
+         this.shoppingCart.push(shoppingItem)
+        }
+          
+      })
+    },
+
     async getProductsAsync() {
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
       try { return axios.get<IProduct[]>(url) }
@@ -204,7 +220,6 @@ new Vue({
       let response = await this.getProductsAsync();
       this.products = response.data;
     },
-
     
     
     setSubCategoryId(Id: number){
@@ -228,25 +243,20 @@ new Vue({
          
     },
 
-   
     async add(){
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
         axios.post<IProduct>(url, this.formData)
     },
 
-
-    addToShopping(item:any){
+    
+    addToShopping(){
       
-      this.shoppingArray.add(this.formDataShopping)
-      
-      
+      this.shoppingArray.push(this.formDataShopping)
     },
-    getShoppingList(){
-      this.shoppingArray;
-    },
- 
 
-     daysToExpirefunc(list:IGrocery[]){
+     
+
+    daysToExpirefunc(list:IGrocery[]){
 
         let today: Date = new Date;
         list.forEach(function(element) {
@@ -262,27 +272,27 @@ new Vue({
           element.productName = element.product.productName;
         });
         return list;        
-      },
+    },
     
     
-      async getAllGroceriesAsync() {
+    async getAllGroceriesAsync() {
           try { return axios.get<IGrocery[]>(baseUrl) }
           catch (error: AxiosError) {
               this.message = error.message;
               alert(error.message)
           }
-      },
+    },
 
-      async getAllGroceries() {
+    async getAllGroceries() {
           let response = await this.getAllGroceriesAsync();
           this.groceries = this.daysToExpirefunc(response.data);
-      },
+    },
 
-      clearList() {
+    clearList() {
           this.groceries = [];
-      },     
+    },     
 
-      deleteRow(index: any){
+    deleteRow(index: any){
       let url: string = baseUrl +"/"+ index
       axios.delete<void>(url)
         .then((response: AxiosResponse<void>)=>{
@@ -292,17 +302,18 @@ new Vue({
         .catch((error: AxiosError)=>{
         alert(error.message)
         })
-      },
+    },
 
-      sort:function(s: any) {
+    sort:function(s: any) {
           //if s == current sort, reverse
           if(s === this.currentSort) {
             this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
           }
           this.currentSort = s;
-      },      
+    },      
 
-    },
+  },
+
   computed:{
     
       sortedGroceries:function() {
