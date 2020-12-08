@@ -191,6 +191,11 @@ new Vue({
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
         axios.post<IProduct>(url, this.formData)
     },
+
+
+    addToShopping(){
+      this.formDataShopping
+    },
  
 
      daysToExpirefunc(list:IGrocery[]){
