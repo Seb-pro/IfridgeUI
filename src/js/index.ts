@@ -94,6 +94,13 @@ interface ingredientsResponse{
   }]
 }
 
+interface IShopping
+{
+  name: string,
+  placetoget: string,
+  price: number
+}
+
 
 let baseUrl = 'https://ifridgeapi.azurewebsites.net/api/ProductInstances';
 
@@ -113,8 +120,9 @@ new Vue({
       selectedSubCategory: "",
       subCategories: [],
       products: [],
-      recipes: []
-
+      recipes: [],
+      shoppingArray: [],
+      formDataShopping: {name: "", placetoget: "", price: undefined}
   },
 
   beforeCreate(){
