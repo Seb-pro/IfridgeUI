@@ -119,18 +119,95 @@ new Vue({
       missingIngredients:[],
       shoppingArray: [],
       shoppingCart: [],
-      //formDataShopping: {name: "", placetoget: "", price: undefined}
       formDataShopping: {name: "", amount: 0, isInCart:false}
          
   },
 
- //beforeCreate(){
-   // this.getSubCategory()
-  //},
-
- 
   methods: {
 
+     //henter alle varer i køleskabet
+     async getAllGroceriesAsync() {
+      try { return axios.get<IGrocery[]>(baseUrl) }
+      catch (error: AxiosError) {
+          this.message = error.message;
+          alert(error.message)
+        }
+      },
+
+    async getAllGroceries() {
+      let response = await this.getAllGroceriesAsync();
+      this.groceries = this.daysToExpirefunc(response.data);
+    },
+
+    //Sub Kategori
+    async getSubCategoriesAsync()
+    {
+      let url = "https://ifridgeapi.azurewebsites.net/api/SubCategories"
+      try { return axios.get<ISub[]>(url) }
+      catch (error: AxiosError) {
+          this.message = error.message;
+          alert(error.message)
+      }
+    },
+
+    async getSubCategory()
+    {
+      let response = await this.getSubCategoriesAsync();
+      this.subCategories = response.data;
+         
+    },
+     
+    setSubCategoryId(Id: number){
+      this.formData.subCategoryId = Id;
+    },
+
+    //udløbs dato
+    daysToExpirefunc(list:IGrocery[]){
+
+      let today: Date = new Date;
+      list.forEach(function(element) {
+        element.expireWarning = true;
+        let timeInFridge = today.getTime() - new Date (element.dateAdded).getTime();
+        let daysInFridge = timeInFridge / (1000*3600*24);
+        element.daysToExpire = element.product.expiration - daysInFridge;
+        element.expireWarning = element.daysToExpire < 3;
+        //Til sorting
+        element.subCategoryName = element.product.subCategory.subCategoryName;
+        element.categoryName = element.product.subCategory.category.categoryName;
+        element.weight = element.product.weight;
+        element.productName = element.product.productName;
+      });
+      return list;        
+    },
+
+    //sletter varer i køleskabet
+    deleteRow(index: any){
+     let url: string = baseUrl +"/"+ index
+     axios.delete<void>(url)
+       .then((response: AxiosResponse<void>)=>{
+        this.deleteMessage = response.status + " " + response.statusText
+        this.getAllGroceries()
+        })
+        .catch((error: AxiosError)=>{
+        alert(error.message)
+        })
+    },
+    //ryder den lokale liste
+    clearList() {
+      this.groceries = [];
+    },  
+
+    //sorterings funktion
+    sort:function(s: any) {
+          //if s == current sort, reverse
+          if(s === this.currentSort) {
+            this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+          }
+          this.currentSort = s;
+    },  
+           
+
+    //Opskrift
     async getRecipesByQueryAsync(query : string){
         let basisUrl = "https://api.spoonacular.com/recipes/complexSearch?query="
         //OBS på KEY MAX 150Point per dag
@@ -148,7 +225,7 @@ new Vue({
       this.recipes = response.data.results;
     },
 
-
+    //ingridienser
     async getRecipeById(id: number){
       let urlId = "https://api.spoonacular.com/recipes/"
       let diffrentAuthentication = "/ingredientWidget.json?apiKey=f41a881d1a3f47ca8de0af384dba58bf"
@@ -159,14 +236,13 @@ new Vue({
       }
     },
 
-   async BuyIngredient(id: number){
+    async BuyIngredient(id: number){
      //her henter vi ingridienser for opskriften basseret på Id
      let response1 = await this.getRecipeById(id);
      let internalList  = response1.data.ingredients;
-      
-      //her henter vi vores liste af varer vi har i køleskabet
-      let response2 = await this.getAllGroceriesAsync();
-      let grocerie = response2.data;
+     //her henter vi vores liste af varer vi har i køleskabet
+     let response2 = await this.getAllGroceriesAsync();
+     let grocerie = response2.data;
       //lav en ny liste hvor vi gemmer nye elementer og gennemløber listen af ingridenser her gennem vi elementet hvis det passer på den næste foreach
       internalList.forEach(function(element: any) {
         //vi har fat i listen af varer i køleskabet og ønsker at finde varer med subcategori der matcher ingridens navnet
@@ -177,22 +253,29 @@ new Vue({
           } else {
             if(element.fontColor != "FFFFFF"){
               element.fontColor = "FF0000"
-            }
-            
+            }           
           }
        });
-
       });
       //her sætter vi vores liste med elementer = med manglende varer listen vi bruger i html'en 
       this.missingIngredients = internalList
     }, 
+   
     
+    //Tilføj varer type til DB
+    async add(){
+      let url = "https://ifridgeapi.azurewebsites.net/api/Products"
+        axios.post<IProduct>(url, this.formData)
+    },
 
+    // Shopping liste
+    addToShopping(){
+      
+      this.shoppingArray.push(this.formDataShopping)
+    },
 
-
-
+      
     ///Virker ikke 8/12
-
     sendToShoppingList(){
       this.missingIngredients.forEach(function(element : any){
         if(element.fontColor == "FF0000"){
@@ -206,8 +289,9 @@ new Vue({
           
       })
     },
-
-    async getProductsAsync() {
+       
+  //Henter varer fra DB
+   /* async getProductsAsync() {
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
       try { return axios.get<IProduct[]>(url) }
       catch (error: AxiosError) {
@@ -219,99 +303,8 @@ new Vue({
     async getProducts() {
       let response = await this.getProductsAsync();
       this.products = response.data;
-    },
+    },*/
     
-    
-    setSubCategoryId(Id: number){
-      this.formData.subCategoryId = Id;
-    },
-  
-    async getSubCategoriesAsync()
-    {
-      let url = "https://ifridgeapi.azurewebsites.net/api/SubCategories"
-      try { return axios.get<ISub[]>(url) }
-      catch (error: AxiosError) {
-          this.message = error.message;
-          alert(error.message)
-      }
-    },
-
-    async getSubCategory()
-    {
-      let response = await this.getSubCategoriesAsync();
-      this.subCategories = response.data;
-         
-    },
-
-    async add(){
-      let url = "https://ifridgeapi.azurewebsites.net/api/Products"
-        axios.post<IProduct>(url, this.formData)
-    },
-
-    
-    addToShopping(){
-      
-      this.shoppingArray.push(this.formDataShopping)
-    },
-
-     
-
-    daysToExpirefunc(list:IGrocery[]){
-
-        let today: Date = new Date;
-        list.forEach(function(element) {
-          element.expireWarning = true;
-          let timeInFridge = today.getTime() - new Date (element.dateAdded).getTime();
-          let daysInFridge = timeInFridge / (1000*3600*24);
-          element.daysToExpire = element.product.expiration - daysInFridge;
-          element.expireWarning = element.daysToExpire < 3;
-          //Til sorting
-          element.subCategoryName = element.product.subCategory.subCategoryName;
-          element.categoryName = element.product.subCategory.category.categoryName;
-          element.weight = element.product.weight;
-          element.productName = element.product.productName;
-        });
-        return list;        
-    },
-    
-    
-    async getAllGroceriesAsync() {
-          try { return axios.get<IGrocery[]>(baseUrl) }
-          catch (error: AxiosError) {
-              this.message = error.message;
-              alert(error.message)
-          }
-    },
-
-    async getAllGroceries() {
-          let response = await this.getAllGroceriesAsync();
-          this.groceries = this.daysToExpirefunc(response.data);
-    },
-
-    clearList() {
-          this.groceries = [];
-    },     
-
-    deleteRow(index: any){
-      let url: string = baseUrl +"/"+ index
-      axios.delete<void>(url)
-        .then((response: AxiosResponse<void>)=>{
-        this.deleteMessage = response.status + " " + response.statusText
-        this.getAllGroceries()
-        })
-        .catch((error: AxiosError)=>{
-        alert(error.message)
-        })
-    },
-
-    sort:function(s: any) {
-          //if s == current sort, reverse
-          if(s === this.currentSort) {
-            this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
-          }
-          this.currentSort = s;
-    },      
-
   },
 
   computed:{
