@@ -1,5 +1,5 @@
 $fontColor: #0091aa;
-$colorHeading: #14be4d;
+$colorHeading: #d80000;
 #content  // div with id: content
 {
   color: $fontColor;
@@ -29,4 +29,6 @@ th {
 }
 
 .jumbotron {
+  background-image: url(cdn.pixabay.com/photo/2017/06/06/22/46/mediterranean-cuisine-2378758_960_720.jpg);
+  background-size: auto;
 }
