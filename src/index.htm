@@ -21,7 +21,7 @@
   <div id="app">
      <!--hvad har vi i køleskabet-->
       <div class="panel panel-primary">  
-        <div class="border bg-primary">
+        <div class="border">
           <h4 class="panel-heading">What's in my fridge?</h4>
         <div>
         <button id="getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get List</button>
@@ -68,7 +68,7 @@
       </div>      
       <br>
       
-    <div class="panel panel-primary border bg-dark container-fluid"> 
+    <div class="panel panel-primary border container-fluid"> 
         <!--opskrift liste-->
       <div class="panel panel-primary row ">
         <div class="col-sm">
@@ -123,14 +123,7 @@
     <br>
   </div>
     <br>
-    
-  
     </div>
-
-
-
-
-
 
 
 
@@ -143,7 +136,7 @@
               <br>
               <input id="barcodeInput" type="number" class="form-control" v-model.number="formData.barcode" placeholder="Barcode #">
               <input id="nameInput" type="text" class="form-control" v-model="formData.productName" placeholder="Name">
-              <select v-model="selectedSubCategory" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
+              <select v-model="selectedSubCategory" class="btn" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
                <option disabled value="">Please select a Sub Category</option>
                <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
               </select>         
