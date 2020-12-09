@@ -21,7 +21,7 @@
   <div id="app">
      <!--hvad har vi i køleskabet-->
       <div class="panel panel-primary">  
-        <div class="border">
+        <div class="border bg-primary">
           <h4 class="panel-heading">What's in my fridge?</h4>
         <div>
         <button id="getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get List</button>
@@ -68,7 +68,7 @@
       </div>      
       <br>
       
-    <div class="panel panel-primary border container"> 
+    <div class="panel panel-primary border bg-dark container-fluid"> 
         <!--opskrift liste-->
       <div class="panel panel-primary row ">
         <div class="col-sm">
@@ -137,7 +137,7 @@
 <!--Input ny varer template til DB-->
     <div class="panel panel-primary border">
       <h4 class="panel-heading">Input new grocery</h4>
-        <div class="panel-body">
+        <div class="panel-body ">
           <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()"> 
             <div class="form-group flex-fill">
               <br>
