@@ -61,7 +61,7 @@
             <!--<td class="expirationList">{{grocery.product.expiration}}</td>-->
             <!--<td class="pictureList">{{grocery.product.picture}}</td>-->
             </div>
-            <td class="deleteButtonList"><button id="deleteButton" v-on:click="deleteRow(grocery.productInstanceId)">Delete</button></td>
+            <td class="deleteButtonList"><button id="deleteButton" class="btn btn-primary" v-on:click="deleteRow(grocery.productInstanceId)">Delete</button></td>
           </tr>
        </tbody>
       </table>
@@ -93,7 +93,7 @@
         </div>
        <!--shopping liste-->   
       <div class="row">
-       <div class="panel panel-primary border col-sm ">
+       <div class="panel panel-primary col-sm ">
         <h4 class="panel-heading">Shopping list</h4>
         <form class="form-inline" v-on:submit.prevent="addToShopping()">
             <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">          
