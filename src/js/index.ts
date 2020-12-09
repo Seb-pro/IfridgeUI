@@ -119,7 +119,7 @@ new Vue({
       missingIngredients:[],
       shoppingArray: [],
       shoppingCart: [],
-      formDataShopping: {name: "", amount: 0, isInCart:false}
+      formDataShopping: {name: "", amount: undefined, isInCart:false}
          
   },
 
@@ -192,7 +192,7 @@ new Vue({
         alert(error.message)
         })
     },
-    //ryder den lokale liste
+    //ryder den lokale køleskabsliste
     clearList() {
       this.groceries = [];
     },  

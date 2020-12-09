@@ -1,5 +1,5 @@
 $fontColor: #0091aa;
-$colorHeading: #14be4d;
+$colorHeading: #ffffff;
 #content  // div with id: content
 {
   color: $fontColor;
@@ -29,4 +29,17 @@ th {
 }
 
 .jumbotron {
+  background-image: url('https://cdn.pixabay.com/photo/2017/06/06/22/46/mediterranean-cuisine-2378758_960_720.jpg');
+  background-size: cover;
+  height: 100%;
+  text-align: center;
+  
 }
+
+//til listen af opskrifter
+// ul.no-bullets {
+//   list-style-type: none; /* Remove bullets */
+//   padding: 0; /* Remove padding */
+//   margin: 0; /* Remove margins */
+//   font-size: large;
+// }
