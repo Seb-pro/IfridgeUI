@@ -65,6 +65,15 @@ interface IProduct{
   picture: string
 }
 
+interface analyzedInstruction{
+  steps: [step]
+}
+
+interface step{
+  number: number,
+  step: string
+}
+
 interface IRecipeQueryResults{
   results:[{
     sourceUrl: string,
@@ -76,11 +85,12 @@ interface IRecipeQueryResults{
     vegan: boolean,
     vegetarian: boolean,
     readyInMinutes: number, 
-    analyzedInstructions:[{
+    analyzedInstructions: [{
+      name: string,
       steps: [{
         number: number,
-        step: string,
-       }]
+        step: string
+      }]
     }]
   }]
   offset: number,
@@ -223,8 +233,8 @@ new Vue({
     async getRecipesByQueryAsync(query : string){
         let basisUrl = "https://api.spoonacular.com/recipes/complexSearch?query="
         //OBS på KEY MAX 150Point per dag
-        //let authentication = "&number=10&apiKey=53229e6b540c401ea70d06a40a272b59&addRecipeInformation=true" // Christians
-        let authentication = "&number=10&apiKey=f41a881d1a3f47ca8de0af384dba58bf&addRecipeInformation=true"  //Majas
+        let authentication = "&number=10&apiKey=53229e6b540c401ea70d06a40a272b59&addRecipeInformation=true" // Christians
+        //let authentication = "&number=10&apiKey=f41a881d1a3f47ca8de0af384dba58bf&addRecipeInformation=true"  //Majas
         try{ return axios.get<IRecipeQueryResults>(basisUrl + query + authentication)}
         catch (error: AxiosError) {
         this.message = error.message;
@@ -239,12 +249,13 @@ new Vue({
 
     saveToLocal(recipe : any){
       this.storedRecipe = recipe;
+      
     },
 
     //ingridienser
     async getRecipeById(id: number){
       let urlId = "https://api.spoonacular.com/recipes/"
-      let diffrentAuthentication = "/ingredientWidget.json?apiKey=f41a881d1a3f47ca8de0af384dba58bf"
+      let diffrentAuthentication = "/ingredientWidget.json?apiKey=53229e6b540c401ea70d06a40a272b59"
       try{ return axios.get<IingredientsResponse>(urlId + id + diffrentAuthentication)}
         catch (error: AxiosError) {
         this.message = error.message;
@@ -252,9 +263,9 @@ new Vue({
       }
     },
 
-    async BuyIngredient(id: number){
+    async BuyIngredient(recipe: any){
      //her henter vi ingridienser for opskriften basseret på Id
-     let response1 = await this.getRecipeById(id);
+     let response1 = await this.getRecipeById(recipe.id);
      let internalList  = response1.data.ingredients;
      //her henter vi vores liste af varer vi har i køleskabet
      let response2 = await this.getAllGroceriesAsync();
@@ -275,7 +286,7 @@ new Vue({
       });
       //her sætter vi vores liste med elementer = med manglende varer listen vi bruger i html'en 
       this.missingIngredients = internalList
-      this.storedRecipe = id
+      this.storedRecipe = recipe;
     }, 
    
     

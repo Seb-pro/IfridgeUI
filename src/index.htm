@@ -29,7 +29,7 @@
         <div class="border border-success">
           <br>
           <h4 class="panel-heading">What's in my fridge?</h4>
-        <div>
+        </div>
         <button id="getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get List</button>
         <button id="clear list" class="btn btn-primary" v-on:click="clearList()">Hide List</button>        
       </div>
@@ -71,25 +71,25 @@
           </tr>
        </tbody>
       </table>
-      </div>      
+         
       <br>
       <!--opskrift og shopping list-->
     <div class="panel panel-primary border border-success container-fluid"> 
         <!--opskrift liste-->
 
-      <!-- <div class="getRecipeBox">
+      <div class="getRecipeBox">
         <h4 class="panel-heading">What's for dinner?</h4>
           <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="type ingredient or recipe">
           <button id= "getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">Get Recipe</button>
 
         <ul class="no-bullets" v-if="recipes.length > 0">
           <li  class="recipeList" id="recipeList" v-for="recipe in recipes">
-            <div @click="BuyIngredient(recipe.id)" @click="saveToLocal(recipe)">
+            <div @click="BuyIngredient(recipe)"> 
               {{recipe.title}}
+              <img class="icon" src="https://images-ext-2.discordapp.net/external/UfhmfG69-8xC6Y_3Lc-_oXVjDVbxQxX9XjHAotWrhvk/https/images.vexels.com/media/users/3/207141/isolated/preview/69e000b25e4ae7b9473fe1d1ab398521-green-leaf-vegan-icon-by-vexels.png" v-if="recipe.vegan">
             </div>
           </li>
         </ul>
-        {{storedRecipe}}
       </div>
 
       <div class="recipeBox" v-if="storedRecipe !== null">
@@ -100,13 +100,13 @@
           {{storedRecipe.summary}}
         </div>
         <div class="stepList">
-          <h5>Steps: </h5>
+          <h5>Steps </h5>         
           <ul>
-            <li v-for="step in storedRecipe.analysedInstructions.steps">
+            <li v-for="recipeStep in storedRecipe.analyzedInstructions[0].steps">
               <div>
-                {{step.number}}:
+                {{recipeStep.number}}
 
-                {{step.step}}:
+                {{recipeStep.step}}
               </div> 
             </li>
           </ul>
@@ -126,60 +126,17 @@
         <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
         
         <div class="recipeImage">
-          <image src="storedRecipe.image" alt="storedRecipe.title">
+          <img v-bind:src="storedRecipe.image" alt="storedRecipe.title">
       
         </div>      
-      </div> -->
+      </div>
     
 
 
       
 
      <div class="panel panel-primary row ">
-        <div class="col-sm">
-          <br>
-          <h4 class="panel-heading">What's for dinner?</h4>
-          <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="type ingredient or recipe">
-          <button id= "getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">Get Recipe</button>
-          <!--opskrifterne i et table-->
-          <table class="table table table-dark table-hover table-sm">
-            <thead>
-              <tr>
-                <th>Recipe</th>
-              </tr>
-            </thead>
-            <tbody v-if="recipes.length > 0">
-              <tr class="recipeList" id="recipeList" v-for="recipe in recipes">
-                <td @click="BuyIngredient(recipe.id)"  @click="saveToLocal(recipe)">{{recipe.title}} <img class="icon" src="https://images-ext-2.discordapp.net/external/UfhmfG69-8xC6Y_3Lc-_oXVjDVbxQxX9XjHAotWrhvk/https/images.vexels.com/media/users/3/207141/isolated/preview/69e000b25e4ae7b9473fe1d1ab398521-green-leaf-vegan-icon-by-vexels.png" v-if="recipe.vegan"></td>
-              </tr>
-            </tbody>
-          </table>
-          
-
-          <table class="table table table-dark table-hover table-sm">
-            <thead>
-              <tr>
-                <th>Ingredients</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody v-if="missingIngredients.length > 0">
-              <tr :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
-                <td>{{ingredient.name}}</td>
-                <td>{{ingredient.amount.metric.value}} {{ingredient.amount.metric.unit}}</td>
-              </tr>
-            </tbody>
-          </table>
-
-
-          <br>
-          <br>
-
-         <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
-        </div>
-
-
-
+      
        <!--shopping liste-->   
       <div class="row">
         <div class="panel panel-primary col-12">
@@ -240,8 +197,8 @@
         </div>
     </div>
   </div>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>-->
  
   <script src="bundle.js"></script>
 </body>
