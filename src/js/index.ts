@@ -71,10 +71,21 @@ interface IRecipeQueryResults{
     id: number,
     title: string,
     image: string,
-    imageType:string}],
-offset: number,
-number: number,
-totalResults: number
+    servings: number,
+    summary: string,
+    vegan: boolean,
+    vegetarian: boolean,
+    readyInMinutes: number, 
+    analyzedInstructions:[{
+      steps: [{
+        number: number,
+        step: string,
+       }]
+    }]
+  }]
+  offset: number,
+  number: number,
+  totalResults: number
 }
 
 interface IingredientsResponse{
@@ -116,8 +127,9 @@ new Vue({
       subCategories: [],
       products: [],
       recipes: [],
-      missingIngredients:[],
-      shoppingArray: [],
+      missingIngredients: [],
+      //shoppingArray: [],
+      storedRecipe: null,
       shoppingCart: [],
       formDataShopping: {name: "", amount: undefined, isInCart:false}
          
@@ -225,6 +237,10 @@ new Vue({
       this.recipes = response.data.results;
     },
 
+    saveToLocal(recipe : any){
+      this.storedRecipe = recipe;
+    }
+
     //ingridienser
     async getRecipeById(id: number){
       let urlId = "https://api.spoonacular.com/recipes/"
@@ -259,6 +275,7 @@ new Vue({
       });
       //her sætter vi vores liste med elementer = med manglende varer listen vi bruger i html'en 
       this.missingIngredients = internalList
+      this.storedRecipe = id
     }, 
    
     
@@ -271,23 +288,24 @@ new Vue({
     // Shopping liste
     addToShopping(){
       
-      this.shoppingArray.push(this.formDataShopping)
+      this.shoppingCart.push(this.formDataShopping)
     },
 
       
-    ///Virker ikke 8/12
+    
     sendToShoppingList(){
+     let list: any = this.shoppingCart 
       this.missingIngredients.forEach(function(element : any){
         if(element.fontColor == "FF0000"){
         let shoppingItem: any = {
           name: element.name, 
           amount: element.amount.metric.value, 
           isInCart: false
-        }
-         this.shoppingCart.push(shoppingItem)
-        }
-          
+          }          
+         list.push(shoppingItem)
+        }          
       })
+      this.shoppingCart = list
     },
        
   //Henter varer fra DB

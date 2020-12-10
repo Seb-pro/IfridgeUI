@@ -16,11 +16,13 @@
 </head>
 
 <body>
-   <div class="development container">
-    <div class="jumbotron mt-3">
+   
+    <!--jumbotron-->
+    <div class="jumbotron jumbotron-fluid">
      <h1 class="display-2">iFridge</h1>
     </div>
-  </div>
+
+
   <div id="app">
      <!--hvad har vi i køleskabet-->
       <div class="panel panel-primary">  
@@ -74,7 +76,66 @@
       <!--opskrift og shopping list-->
     <div class="panel panel-primary border border-success container-fluid"> 
         <!--opskrift liste-->
-      <div class="panel panel-primary row ">
+
+      <!-- <div class="getRecipeBox">
+        <h4 class="panel-heading">What's for dinner?</h4>
+          <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="type ingredient or recipe">
+          <button id= "getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">Get Recipe</button>
+
+        <ul class="no-bullets" v-if="recipes.length > 0">
+          <li  class="recipeList" id="recipeList" v-for="recipe in recipes">
+            <div @click="BuyIngredient(recipe.id)" @click="saveToLocal(recipe)">
+              {{recipe.title}}
+            </div>
+          </li>
+        </ul>
+        {{storedRecipe}}
+      </div>
+
+      <div class="recipeBox" v-if="storedRecipe !== null">
+        <div class="titleBox">
+          {{storedRecipe.title}}
+        </div>
+        <div class="summaryBox">
+          {{storedRecipe.summary}}
+        </div>
+        <div class="stepList">
+          <h5>Steps: </h5>
+          <ul>
+            <li v-for="step in storedRecipe.analysedInstructions.steps">
+              <div>
+                {{step.number}}:
+
+                {{step.step}}:
+              </div> 
+            </li>
+          </ul>
+        </div>
+      
+        <div class="ingredientsList">
+          <ul v-if="missingIngredients.length > 0">
+            <h5>Ingredients: </h5>
+            <li :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
+              <div>
+                {{ingredient.amount.metric.value}} {{ingredient.amount.metric.unit}}  {{ingredient.name}}
+              </div> 
+            </li>
+          </ul>
+        </div>
+
+        <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
+        
+        <div class="recipeImage">
+          <image src="storedRecipe.image" alt="storedRecipe.title">
+      
+        </div>      
+      </div> -->
+    
+
+
+      
+
+     <div class="panel panel-primary row ">
         <div class="col-sm">
           <br>
           <h4 class="panel-heading">What's for dinner?</h4>
@@ -89,10 +150,11 @@
             </thead>
             <tbody v-if="recipes.length > 0">
               <tr class="recipeList" id="recipeList" v-for="recipe in recipes">
-                <td @click="BuyIngredient(recipe.id)">{{recipe.title}}</td>
+                <td @click="BuyIngredient(recipe.id)"  @click="saveToLocal(recipe)">{{recipe.title}} <img class="icon" src="https://images-ext-2.discordapp.net/external/UfhmfG69-8xC6Y_3Lc-_oXVjDVbxQxX9XjHAotWrhvk/https/images.vexels.com/media/users/3/207141/isolated/preview/69e000b25e4ae7b9473fe1d1ab398521-green-leaf-vegan-icon-by-vexels.png" v-if="recipe.vegan"></td>
               </tr>
             </tbody>
           </table>
+          
 
           <table class="table table table-dark table-hover table-sm">
             <thead>
@@ -104,34 +166,16 @@
             <tbody v-if="missingIngredients.length > 0">
               <tr :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
                 <td>{{ingredient.name}}</td>
-                <td>{{ingredient.amount.metric}}</td>
+                <td>{{ingredient.amount.metric.value}} {{ingredient.amount.metric.unit}}</td>
               </tr>
             </tbody>
           </table>
+
+
           <br>
           <br>
 
-         <!--opskrifterne i en liste-->
-
-         <!-- <ul class="no-bullets" v-if="recipes.length > 0">
-            <li  class="recipeList" id="recipeList" v-for="recipe in recipes">
-              <div @click="BuyIngredient(recipe.id)">
-                {{recipe.title}}
-              </div>
-            </li>
-          </ul>
-          <br>
-          <br>
-          <ul v-if="missingIngredients.length > 0">
-            <h5>Ingredients: </h5>
-            <li :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
-              <div>
-                {{ingredient.name}}
-                {{ingredient.amount.metric}}
-              </div> 
-            </li>
-          </ul> -->
-          <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
+         <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
         </div>
 
 
@@ -195,6 +239,7 @@
           </form>
         </div>
     </div>
+  </div>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
  
