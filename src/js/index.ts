@@ -192,6 +192,7 @@ new Vue({
         let timeInFridge = today.getTime() - new Date (element.dateAdded).getTime();
         let daysInFridge = timeInFridge / (1000*3600*24);
         element.daysToExpire = element.product.expiration - daysInFridge;
+        
         element.expireWarning = element.daysToExpire < 3;
         //Til sorting
         element.subCategoryName = element.product.subCategory.subCategoryName;
@@ -201,6 +202,11 @@ new Vue({
       });
       return list;        
     },
+
+    daysToExpireToString(days: number){
+      return days.toFixed(1)
+
+    }
 
     //sletter varer i køleskabet
     deleteRow(index: any){
