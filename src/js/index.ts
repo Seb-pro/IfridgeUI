@@ -65,15 +65,6 @@ interface IProduct{
   picture: string
 }
 
-interface analyzedInstruction{
-  steps: [step]
-}
-
-interface step{
-  number: number,
-  step: string
-}
-
 interface IRecipeQueryResults{
   results:[{
     sourceUrl: string,
@@ -138,7 +129,6 @@ new Vue({
       products: [],
       recipes: [],
       missingIngredients: [],
-      //shoppingArray: [],
       storedRecipe: null,
       shoppingCart: [],
       formDataShopping: {name: "", amount: undefined, isInCart:false}
@@ -207,7 +197,7 @@ new Vue({
       return days.toFixed(1)
 
     },
-    
+
     //sletter varer i køleskabet
     deleteRow(index: any){
      let url: string = baseUrl +"/"+ index

@@ -43,12 +43,8 @@
             <th @click="sort('dateAdded')">Date added</th>           
             <th @click="sort('daysToExpire')">Days to expiration</th>            
             <th>Status on grocery</th>       
-            <th></th>                                    <!--click funktion??-->
-            <!--<th @click="sort('productInstanceId')">productInstanceId</th>-->
-            <!--<th @click="sort('barcode')" id="barcodeButton">Barcode</th>-->
-            <!--<th @click="sort('categoryName')">Category name</th>-->    
-            <!--<th @click="sort('expiration')">Expiration date</th>-->
-            <!--<th @click="sort('product.picture')">Picture</th>-->
+            <th></th>                                    
+       
           </tr>
         </thead>
        <tbody>
@@ -62,11 +58,7 @@
               <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png" alt="Item is about to expire">
               <h6 v-else>The item is still good</h6>  
             </td>
-            <!--<td class="productInstanceIdList">{{grocery.productInstanceId}}</td>-->
-            <!--<td class="barcodeList">{{grocery.barcode}}</td>-->
-            <!--<td>{{grocery.categoryName}}</td>-->     
-            <!--<td class="expirationList">{{grocery.product.expiration}}</td>-->
-            <!--<td class="pictureList">{{grocery.product.picture}}</td>-->
+           
             
             <td class="deleteButtonList"><button id="deleteButton" class="" v-on:click="deleteRow(grocery.productInstanceId)"><img class="icon" src="https://images-ext-1.discordapp.net/external/VjjLfJP7AKm8suY2NaEGAccBkcl5UptFltjGiEUR1is/https/icons-for-free.com/iconfiles/png/512/delete%2Bremove%2Btrash%2Btrash%2Bbin%2Btrash%2Bcan%2Bicon-1320073117929397588.png" alt="Trashcan"></button></td>
           </tr>
@@ -191,15 +183,12 @@
               </select>         
               <input id="expirationDateInput" type="number" class="form-control btn" v-model.number="formData.expiration" placeholder="Expiration Date">
               <input id="weightInput" type="number" class="form-control btn" v-model.number="formData.weight" placeholder="Weight">
-              <!--<input id="pictureInput" type="text" class="form-control btn" v-model="formData.picture" placeholder="Picture">-->
             </div>
             <button id="add" class="btn btn-primary" v-on:click="add()">Add to IFridge</button>
           </form>
         </div>
     </div>
   </div>
-  <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>-->
  
   <script src="bundle.js"></script>
 </body>
