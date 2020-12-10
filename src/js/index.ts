@@ -206,8 +206,8 @@ new Vue({
     daysToExpireToString(days: number){
       return days.toFixed(1)
 
-    }
-
+    },
+    
     //sletter varer i køleskabet
     deleteRow(index: any){
      let url: string = baseUrl +"/"+ index
