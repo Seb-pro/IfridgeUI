@@ -239,7 +239,7 @@ new Vue({
 
     saveToLocal(recipe : any){
       this.storedRecipe = recipe;
-    }
+    },
 
     //ingridienser
     async getRecipeById(id: number){
