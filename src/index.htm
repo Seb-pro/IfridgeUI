@@ -31,7 +31,7 @@
           <h4 class="panel-heading">What's in my fridge?</h4>
         </div>
         <button id="getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get List</button>
-        <button id="clear list" class="btn btn-primary" v-on:click="clearList()">Hide List</button>        
+        <button id="clearlist" class="btn btn-primary" v-on:click="clearList()">Hide List</button>        
       </div>
       
       <table id="Table1" class="table table-striped table-grey table-bordered flex-fillS" >
@@ -42,7 +42,8 @@
             <th @click="sort('subCategoryName')">Sub category name</th>                        
             <th @click="sort('dateAdded')">Date added</th>           
             <th @click="sort('daysToExpire')">Days to expiration</th>            
-            <th>Status on grocery</th>                                           <!--click funktion??-->
+            <th>Status on grocery</th>       
+            <th></th>                                    <!--click funktion??-->
             <!--<th @click="sort('productInstanceId')">productInstanceId</th>-->
             <!--<th @click="sort('barcode')" id="barcodeButton">Barcode</th>-->
             <!--<th @click="sort('categoryName')">Category name</th>-->    
@@ -58,7 +59,7 @@
             <td>{{grocery.dateAdded}}</td>           
             <td class="expirationList">{{grocery.daysToExpire}}</td>            
             <td class="expirationStatus"> 
-              <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png">
+              <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png" alt="Item is about to expire">
               <h6 v-else>The item is still good</h6>  
             </td>
             <!--<td class="productInstanceIdList">{{grocery.productInstanceId}}</td>-->
@@ -86,7 +87,7 @@
           <li  class="recipeList" id="recipeList" v-for="recipe in recipes">
             <div @click="BuyIngredient(recipe)"> 
               {{recipe.title}}
-              <img class="icon" src="https://images-ext-2.discordapp.net/external/UfhmfG69-8xC6Y_3Lc-_oXVjDVbxQxX9XjHAotWrhvk/https/images.vexels.com/media/users/3/207141/isolated/preview/69e000b25e4ae7b9473fe1d1ab398521-green-leaf-vegan-icon-by-vexels.png" v-if="recipe.vegan">
+              <img class="icon"  v-if="recipe.vegan" src="https://images-ext-2.discordapp.net/external/UfhmfG69-8xC6Y_3Lc-_oXVjDVbxQxX9XjHAotWrhvk/https/images.vexels.com/media/users/3/207141/isolated/preview/69e000b25e4ae7b9473fe1d1ab398521-green-leaf-vegan-icon-by-vexels.png" alt="Vegan Recipe">
             </div>
           </li>
         </ul>
@@ -113,8 +114,8 @@
         </div>
       
         <div class="ingredientsList">
-          <ul v-if="missingIngredients.length > 0">
-            <h5>Ingredients: </h5>
+          <h5>Ingredients: </h5>
+          <ul v-if="missingIngredients.length > 0">            
             <li :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
               <div>
                 {{ingredient.amount.metric.value}} {{ingredient.amount.metric.unit}}  {{ingredient.name}}
