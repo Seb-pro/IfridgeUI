@@ -1,202 +1,200 @@
 <!doctype html>
 <html lang="en-US">
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.3/lux/bootstrap.min.css" integrity="sha512-T8UuP+yWshtlRixgVqhXTZ1F31Hf4Gh9IYuEdlq0ttpXexFziXoeGOfUwpNs+P+FlxFxDAFxL3xsWwgi/LAj5w==" crossorigin="anonymous" />
-  <link rel="stylesheet" href="./bundle.css">
-  <title>IFridge</title>
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body>
-   
-    <!--jumbotron-->
-    <div class="jumbotron jumbotron-fluid">
-     <h1 class="display-2">iFridge</h1>
-    </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-  <div id="app">
-     <!--hvad har vi i køleskabet-->
-      <div class="panel panel-primary">  
-        <div class="border border-success">
-          <br>
-          <h4 class="panel-heading">What's in my fridge?</h4>
-        </div>
-        <button id="getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get List</button>
-        <button id="clearlist" class="btn btn-primary" v-on:click="clearList()">Hide List</button>        
-      </div>
-      
-      <table id="Table1" class="table table-striped table-grey table-bordered flex-fillS" >
-         <thead>
-          <tr>
-            <th @click="sort('productName')">Product name</th>
-            <th @click="sort('weight')">Weight</th>            
-            <th @click="sort('subCategoryName')">Sub category name</th>                        
-            <th @click="sort('dateAdded')">Date added</th>           
-            <th @click="sort('daysToExpire')">Days to expiration</th>            
-            <th>Status on grocery</th>       
-            <th></th>                                    
-       
-          </tr>
-        </thead>
-       <tbody>
-          <tr id = "TableRows" v-for="grocery in sortedGroceries">
-            <td class="nameList">{{grocery.productName}}</td>
-            <td class="weightList">{{grocery.weight}}</td>           
-            <td class="subCategoryList">{{grocery.subCategoryName}}</td>               
-            <td>{{grocery.dateAdded}}</td>           
-            <td class="expirationList">{{daysToExpireToString(grocery.daysToExpire)}}</td>            
-            <td class="expirationStatus"> 
-              <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png" alt="Item is about to expire">
-              <h6 v-else>The item is still good</h6>  
-            </td>
-           
-            
-            <td class="deleteButtonList"><button id="deleteButton" class="" v-on:click="deleteRow(grocery.productInstanceId)"><img class="icon" src="https://images-ext-1.discordapp.net/external/VjjLfJP7AKm8suY2NaEGAccBkcl5UptFltjGiEUR1is/https/icons-for-free.com/iconfiles/png/512/delete%2Bremove%2Btrash%2Btrash%2Bbin%2Btrash%2Bcan%2Bicon-1320073117929397588.png" alt="Trashcan"></button></td>
-          </tr>
-       </tbody>
-      </table>
-         
-      <br>
-      <!--opskrift og shopping list-->
-    <div class="panel panel-primary border border-success container-fluid"> 
-        <!--opskrift liste-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.3/lux/bootstrap.min.css" integrity="sha512-T8UuP+yWshtlRixgVqhXTZ1F31Hf4Gh9IYuEdlq0ttpXexFziXoeGOfUwpNs+P+FlxFxDAFxL3xsWwgi/LAj5w==" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="./bundle.css">
+        <title>IFridge</title>
+    </head>
 
-      <div class="getRecipeBox">
-        <h4 class="panel-heading">What's for dinner?</h4>
-          <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="type ingredient or recipe">
-          <button id= "getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">Get Recipe</button>
-
-        <ul class="no-bullets" v-if="recipes.length > 0">
-          <li  class="recipeList" id="recipeList" v-for="recipe in recipes">
-            <div @click="BuyIngredient(recipe)"> 
-              {{recipe.title}}
-              <img class="icon"  v-if="recipe.vegan" src="https://images-ext-2.discordapp.net/external/UfhmfG69-8xC6Y_3Lc-_oXVjDVbxQxX9XjHAotWrhvk/https/images.vexels.com/media/users/3/207141/isolated/preview/69e000b25e4ae7b9473fe1d1ab398521-green-leaf-vegan-icon-by-vexels.png" alt="Vegan Recipe">
+    <body>
+        <div
+            id="app">
+            <!--jumbotron-->
+            <div class="jumbotron jumbotron-fluid">
+                <h1 class="display-2">iFridge</h1>
             </div>
-          </li>
-        </ul>
-      </div>
 
-      <div class="recipeBox" v-if="storedRecipe !== null">
-        <div class="titleBox">
-          {{storedRecipe.title}}
-        </div>
-        <div class="summaryBox">
-          {{storedRecipe.summary}}
-        </div>
-        <div class="stepList">
-          <h5>Steps </h5>         
-          <ul>
-            <li v-for="recipeStep in storedRecipe.analyzedInstructions[0].steps">
-              <div>
-                {{recipeStep.number}}
+            <!--hvad har vi i køleskabet-->
+            <div class="container">
+                <div class="panel panel-primary">
+                    <div class="border border-success">
+                        <br>
+                        <h4 class="panel-heading">What's in my fridge?</h4>
+                    </div>
+                    <button id="getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get List</button>
+                    <button id="clearlist" class="btn btn-primary" v-on:click="clearList()">Hide List</button>
+                </div>
 
-                {{recipeStep.step}}
-              </div> 
-            </li>
-          </ul>
-        </div>
-      
-        <div class="ingredientsList">
-          <h5>Ingredients: </h5>
-          <ul v-if="missingIngredients.length > 0">            
-            <li :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
-              <div>
-                {{ingredient.amount.metric.value}} {{ingredient.amount.metric.unit}}  {{ingredient.name}}
-              </div> 
-            </li>
-          </ul>
-        </div>
+                <table id="Table1" class="table table-striped table-grey table-bordered flex-fillS">
+                    <thead>
+                        <tr>
+                            <th @click="sort('productName')">Product name</th>
+                            <th @click="sort('weight')">Weight</th>
+                            <th @click="sort('subCategoryName')">Sub category name</th>
+                            <th @click="sort('dateAdded')">Date added</th>
+                            <th @click="sort('daysToExpire')">Days to expiration</th>
+                            <th>Status on grocery</th>
+                            <th></th>
 
-        <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
-        
-        <div class="recipeImage">
-          <img v-bind:src="storedRecipe.image" alt="storedRecipe.title">
-      
-        </div>      
-      </div>
-    
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="TableRows" v-for="grocery in sortedGroceries">
+                            <td class="nameList">{{grocery.productName}}</td>
+                            <td class="weightList">{{grocery.weight}}</td>
+                            <td class="subCategoryList">{{grocery.subCategoryName}}</td>
+                            <td>{{grocery.dateAdded}}</td>
+                            <td class="expirationList">{{daysToExpireToString(grocery.daysToExpire)}}</td>
+                            <td class="expirationStatus">
+                                <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png" alt="Item is about to expire">
+                                <h6 v-else>The item is still good</h6>
+                            </td>
 
 
-      
-
-     <div class="panel panel-primary row ">
-      
-       <!--shopping liste-->   
-      <div class="row">
-        <div class="panel panel-primary col-sm">
-          <br>
-          <h4 class="panel-heading">Shopping list</h4>
-          <form class="form-inline" v-on:submit.prevent="addToShopping()">
-            <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">
-            <input class="form-control" id="itemAmount" v-model.number="formDataShopping.amount" type="number" placeholder="Amount">           
-            <button class="btn btn-primary" id="addToShopping">Add to Shopping List</button>
-          </form>        
-
-          <div class="table table-striped table-grey table-bordered">
-            <table  id="ShoppingListHeadline">
-              <thead>
-                <tr>
-                  <th>Item Name</th>
-                  <th>Amount</th>
-                  <th>In Cart</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="ShoppingListRows" v-for="item in shoppingCart">
-                  <td>{{item.name}}</td>
-                  <td>{{item.amount}}</td>
-                  <td><input type="checkbox" > In Cart
-                    <!--{{item.isInCart}}
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
-                      <label class="custom-control-label" for="customCheck1">1</label>
-                    </div>-->
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div> 
-      </div>
-      
-    </div>              
-    
-  </div>
-  <br>
-    
-    <!--Input ny varer template til DB-->
-    <div class="panel panel-primary border border-success">
-      <br>
-      <h4 class="panel-heading">Input new grocery</h4>
-        <div class="panel-body ">
-          <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()"> 
-            <div class="form-group flex-fill">
-              <br>
-              <input id="barcodeInput" type="number" class="form-control btn" v-model.number="formData.barcode" placeholder="Barcode #">
-              <input id="nameInput" type="text" class="form-control btn" v-model="formData.productName" placeholder="Name">
-              <select v-model="selectedSubCategory" class="btn" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
-               <option disabled value="">Please select a Sub Category</option>
-               <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
-              </select>         
-              <input id="expirationDateInput" type="number" class="form-control btn" v-model.number="formData.expiration" placeholder="Expiration Date">
-              <input id="weightInput" type="number" class="form-control btn" v-model.number="formData.weight" placeholder="Weight">
+                            <td class="deleteButtonList">
+                                <button id="deleteButton" class="" v-on:click="deleteRow(grocery.productInstanceId)"><img class="icon" src="https://images-ext-1.discordapp.net/external/VjjLfJP7AKm8suY2NaEGAccBkcl5UptFltjGiEUR1is/https/icons-for-free.com/iconfiles/png/512/delete%2Bremove%2Btrash%2Btrash%2Bbin%2Btrash%2Bcan%2Bicon-1320073117929397588.png" alt="Trashcan"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <button id="add" class="btn btn-primary" v-on:click="add()">Add to IFridge</button>
-          </form>
-        </div>
-    </div>
-  </div>
- 
-  <script src="bundle.js"></script>
-</body>
+            <br>
+            <!--opskrift, specifik opskrift og shopping list-->
+            <div
+                class="panel panel-primary border border-success container-fluid container d-flex flex-row bd-highlight mb-3">
 
+                <!--opskrift liste-->
+                <div class="getRecipeBox p-2 bd-highlight border border-success">
+                    <h4 class="panel-heading">What's for dinner?</h4>
+                    <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="type ingredient or recipe">
+                    <button id="getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">Get Recipe</button>
+
+                    <ul class="no-bullets" v-if="recipes.length > 0">
+                        <li class="recipeList" id="recipeList" v-for="recipe in recipes">
+                            <div @click="BuyIngredient(recipe)">
+                                {{recipe.title}}
+                                <img class="icon" v-if="recipe.vegan" src="https://images-ext-2.discordapp.net/external/UfhmfG69-8xC6Y_3Lc-_oXVjDVbxQxX9XjHAotWrhvk/https/images.vexels.com/media/users/3/207141/isolated/preview/69e000b25e4ae7b9473fe1d1ab398521-green-leaf-vegan-icon-by-vexels.png" alt="Vegan Recipe">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!--specifik opskrift-->
+                <div class="container title, summary, steps og ingredients">
+                    <div class="recipeBox p-2 bd-highlight d-flex flex-column bd-highlight mb-3 border border-success " v-if="storedRecipe !== null">
+                        <div class="titleBox p-2 bd-highlight border border-success">
+                            {{storedRecipe.title}}
+                        </div>
+                        <br>
+                        <h5>Summary:
+                        </h5>
+                        <div class="summaryBox p-2 bd-highlight border border-success" v-html="storedRecipe.summary"></div>
+                        <div class="stepList p-2 bd-highlight border border-success">
+                            <h5>Steps:
+                            </h5>
+                            <ul>
+                                <li v-for="recipeStep in storedRecipe.analyzedInstructions[0].steps">
+                                    <div>
+                                        {{recipeStep.number}}
+
+                                        {{recipeStep.step}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--ingridiens liste-->
+                        <div class="ingredientsList border border-success">
+                            <h5>Ingredients:
+                            </h5>
+                            <ul v-if="missingIngredients.length > 0">
+                                <li :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
+                                    <div>
+                                        {{ingredient.amount.metric.value}}
+                                        {{ingredient.amount.metric.unit}}
+                                        {{ingredient.name}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--send til shopping list-->
+                        <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
+                        <!--billed-->
+                        <div class="recipeImage border border-success">
+                            <img v-bind:src="storedRecipe.image" alt="storedRecipe.title">
+
+                        </div>
+                    </div>
+
+
+                    <!--shopping liste-->
+                    <div class="panel panel-primary row col-sm p-2 bd-highlight">
+                        <br>
+                        <h4 class="panel-heading">Shopping list</h4>
+                        <form class="form-inline" v-on:submit.prevent="addToShopping()">
+                            <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">
+                            <input class="form-control" id="itemAmount" v-model.number="formDataShopping.amount" type="number" placeholder="Amount">
+                            <button class="btn btn-primary" id="addToShopping">Add to Shopping List</button>
+                        </form>
+
+                        <div class="table table-striped table-grey table-bordered">
+                            <table id="ShoppingListHeadline">
+                                <thead>
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Amount</th>
+                                        <th>In Cart</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="ShoppingListRows" v-for="item in shoppingCart">
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td><input type="checkbox">
+                                            In Cart
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--Input ny varer template til DB-->
+                <div class="container">
+                    <div class="panel panel-primary border border-success">
+                        <br>
+                        <h4 class="panel-heading">Input new grocery</h4>
+                        <div class="panel-body ">
+                            <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()">
+                                <div class="form-group flex-fill">
+                                    <br>
+                                    <input id="barcodeInput" type="number" class="form-control btn" v-model.number="formData.barcode" placeholder="Barcode #">
+                                    <input id="nameInput" type="text" class="form-control btn" v-model="formData.productName" placeholder="Name">
+                                    <select v-model="selectedSubCategory" class="btn" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
+                                        <option disabled value="">Please select a Sub Category</option>
+                                        <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
+                                    </select>
+                                    <input id="expirationDateInput" type="number" class="form-control btn" v-model.number="formData.expiration" placeholder="Expiration Date">
+                                    <input id="weightInput" type="number" class="form-control btn" v-model.number="formData.weight" placeholder="Weight">
+                                </div>
+                                <button id="add" class="btn btn-primary" v-on:click="add()">Add to IFridge</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="bundle.js"></script>
+        </body>
+    </body>
 </html>

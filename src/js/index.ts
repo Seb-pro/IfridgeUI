@@ -131,7 +131,7 @@ new Vue({
       missingIngredients: [],
       storedRecipe: null,
       shoppingCart: [],
-      formDataShopping: {name: "", amount: undefined, isInCart:false}
+      formDataShopping: {name: "", amount: undefined}
          
   },
 
@@ -292,13 +292,11 @@ new Vue({
       let url = "https://ifridgeapi.azurewebsites.net/api/Products"
         axios.post<IProduct>(url, this.formData)
     },
-
-    // Shopping liste
+    
     addToShopping(){
-      
-      this.shoppingCart.push(this.formDataShopping)
+      let newGrocery: any = {name: this.formDataShopping.name, amount: this.formDataShopping.amount}
+      this.shoppingCart.push(newGrocery)
     },
-
       
     
     sendToShoppingList(){
