@@ -23,22 +23,25 @@ th {
   cursor: pointer;
 }
 
+li {
+  cursor: pointer;
+}
+
 .warningImage {
   width: 20px;
   height: 20px;
 }
 
 .jumbotron {
-  background-image: url('https://cdn.pixabay.com/photo/2017/06/06/22/46/mediterranean-cuisine-2378758_960_720.jpg');
+  background-image: url("https://cdn.pixabay.com/photo/2017/06/06/22/46/mediterranean-cuisine-2378758_960_720.jpg");
   background-color: black;
-  background-size: cover ;
+  background-size: cover;
   //height: 100%;
   width: 100%;
   text-align: center;
-  
 }
 
-.icon{
+.icon {
   width: 20px;
 }
 
