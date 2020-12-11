@@ -193,6 +193,7 @@ new Vue({
       return list;        
     },
 
+    //angiver hvor mange decimaler der er i days to experation i vores køleskab
     daysToExpireToString(days: number){
       return days.toFixed(1)
 

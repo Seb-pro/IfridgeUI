@@ -132,7 +132,7 @@
       
        <!--shopping liste-->   
       <div class="row">
-        <div class="panel panel-primary col-12">
+        <div class="panel panel-primary col-sm">
           <br>
           <h4 class="panel-heading">Shopping list</h4>
           <form class="form-inline" v-on:submit.prevent="addToShopping()">
@@ -145,16 +145,22 @@
             <table  id="ShoppingListHeadline">
               <thead>
                 <tr>
-                  <th scope="col">Item Name</th>
-                  <th scope="col">Amount</th>
-                  <th scope="col">In Cart</th>
+                  <th>Item Name</th>
+                  <th>Amount</th>
+                  <th>In Cart</th>
                 </tr>
               </thead>
               <tbody>
                 <tr id="ShoppingListRows" v-for="item in shoppingCart">
                   <td>{{item.name}}</td>
                   <td>{{item.amount}}</td>
-                  <td >{{item.isInCart}}</td>
+                  <td><input type="checkbox" > In Cart
+                    <!--{{item.isInCart}}
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
+                      <label class="custom-control-label" for="customCheck1">1</label>
+                    </div>-->
+                  </td>
                 </tr>
               </tbody>
             </table>
