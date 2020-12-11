@@ -163,35 +163,31 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
-
-
             </div>
 
             <!--Input ny varer template til DB-->
-            <div class="container">
-                <div class="panel panel-primary border border-success">
-                    <br>
-                    <h4 class="panel-heading">Input new grocery</h4>
-                    <div class="panel-body ">
-                        <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()">
-                            <div class="form-group flex-fill">
-                                <br>
-                                <input id="barcodeInput" type="number" class="form-control btn" v-model.number="formData.barcode" placeholder="Barcode #">
-                                <input id="nameInput" type="text" class="form-control btn" v-model="formData.productName" placeholder="Name">
-                                <select v-model="selectedSubCategory" class="btn" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
-                                    <option disabled value="">Please select a Sub Category</option>
-                                    <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
-                                </select>
-                                <input id="expirationDateInput" type="number" class="form-control btn" v-model.number="formData.expiration" placeholder="Expiration Date">
-                                <input id="weightInput" type="number" class="form-control btn" v-model.number="formData.weight" placeholder="Weight">
-                            </div>
-                            <button id="add" class="btn btn-primary" v-on:click="add()">Add to IFridge</button>
-                        </form>
-                    </div>
+            <div class="panel panel-primary border border-success">
+                <br>
+                <h4 class="panel-heading">Input new grocery</h4>
+                <div class="panel-body ">
+                    <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()">
+                        <div class="form-group flex-fill">
+                            <br>
+                            <input id="barcodeInput" type="number" class="form-control btn" v-model.number="formData.barcode" placeholder="Barcode #">
+                            <input id="nameInput" type="text" class="form-control btn" v-model="formData.productName" placeholder="Name">
+                            <select v-model="selectedSubCategory" class="btn" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
+                                <option disabled value="">Please select a Sub Category</option>
+                                <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
+                            </select>
+                            <input id="expirationDateInput" type="number" class="form-control btn" v-model.number="formData.expiration" placeholder="Expiration Date">
+                            <input id="weightInput" type="number" class="form-control btn" v-model.number="formData.weight" placeholder="Weight">
+                        </div>
+                        <button id="add" class="btn btn-primary" v-on:click="add()">Add to IFridge</button>
+                    </form>
                 </div>
             </div>
+
         </body>
     </body>
 </html></div><script src="bundle.js"></script></body></html></body></html>
