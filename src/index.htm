@@ -24,7 +24,7 @@
             </div>
 
             <!--hvad har vi i køleskabet-->
-            <div class="container">
+            <div id="whatsInMyfridge">
                 <div class="panel panel-primary">
                     <div class="border border-success">
                         <br>
@@ -70,7 +70,7 @@
             <br>
             <!--opskrift, specifik opskrift og shopping list-->
             <div
-                class="panel panel-primary border border-success container-fluid container d-flex flex-row bd-highlight mb-3">
+                class="panel panel-primary border border-success container-fluid d-flex flex-row bd-highlight mb-3">
 
                 <!--opskrift liste-->
                 <div class="getRecipeBox p-2 bd-highlight border border-success">
@@ -88,30 +88,31 @@
                     </ul>
                 </div>
                 <!--specifik opskrift-->
-                <div class="container title, summary, steps og ingredients">
-                    <div class="recipeBox p-2 bd-highlight d-flex flex-column bd-highlight mb-3 border border-success " v-if="storedRecipe !== null">
-                        <div class="titleBox p-2 bd-highlight border border-success">
-                            {{storedRecipe.title}}
-                        </div>
-                        <br>
-                        <h5>Summary:
-                        </h5>
-                        <div class="summaryBox p-2 bd-highlight border border-success" v-html="storedRecipe.summary"></div>
-                        <div class="stepList p-2 bd-highlight border border-success">
-                            <h5>Steps:
-                            </h5>
-                            <ul>
-                                <li v-for="recipeStep in storedRecipe.analyzedInstructions[0].steps">
-                                    <div>
-                                        {{recipeStep.number}}
+                <div id="recipe" class="d-flex flex-column bd-highlight mb-3 container-fluid" v-if="storedRecipe !== null">
+                    <div id="recipeTitle" class="p-2 bd-highlight border border-success">
+                        {{storedRecipe.title}}
+                    </div>
+                    <div id="recipeBody" class="p-2 bd-highlight border border-success d-flex flex-row bd-highlight mb-3 ">
+                        <div id="summarySteps" class="d-flex flex-column bd-highlight mb-3">
+                            <div id="summary" class="border border-success p-2 bd-highlight">
+                                <h5>Summary:</h5>
+                                <div v-html="storedRecipe.summary"></div>
+                            </div>
+                            <div id="steps" class="border border-success p-2 bd-highlight ">
+                                <h5>Steps:
+                                </h5>
+                                <ul>
+                                    <li v-for="recipeStep in storedRecipe.analyzedInstructions[0].steps">
+                                        <div>
+                                            {{recipeStep.number}}
 
-                                        {{recipeStep.step}}
-                                    </div>
-                                </li>
-                            </ul>
+                                            {{recipeStep.step}}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <!--ingridiens liste-->
-                        <div class="ingredientsList border border-success">
+                        <div id="ingredients" class="border border-success p-2 bd-highlight">
                             <h5>Ingredients:
                             </h5>
                             <ul v-if="missingIngredients.length > 0">
@@ -123,80 +124,74 @@
                                     </div>
                                 </li>
                             </ul>
+                            <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
                         </div>
-                        <!--send til shopping list-->
-                        <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
-                        <!--billed-->
-                        <div class="recipeImage border border-success">
+                        <div id="picture" class="border border-success">
                             <img v-bind:src="storedRecipe.image" alt="storedRecipe.title">
-
                         </div>
                     </div>
+                </div>
+                <br>
 
+                <!--shopping liste-->
+                <div class="panel panel-primary row col-sm p-2 bd-highlight border border-success">
+                    <br>
+                    <h4 class="panel-heading">Shopping list</h4>
+                    <form class="form-inline" v-on:submit.prevent="addToShopping()">
+                        <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">
+                        <input class="form-control" id="itemAmount" v-model.number="formDataShopping.amount" type="number" placeholder="Amount">
+                        <button class="btn btn-primary" id="addToShopping">Add to Shopping List</button>
+                    </form>
 
-                    <!--shopping liste-->
-                    <div class="panel panel-primary row col-sm p-2 bd-highlight">
-                        <br>
-                        <h4 class="panel-heading">Shopping list</h4>
-                        <form class="form-inline" v-on:submit.prevent="addToShopping()">
-                            <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">
-                            <input class="form-control" id="itemAmount" v-model.number="formDataShopping.amount" type="number" placeholder="Amount">
-                            <button class="btn btn-primary" id="addToShopping">Add to Shopping List</button>
-                        </form>
-
-                        <div class="table table-striped table-grey table-bordered">
-                            <table id="ShoppingListHeadline">
-                                <thead>
-                                    <tr>
-                                        <th>Item Name</th>
-                                        <th>Amount</th>
-                                        <th>In Cart</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr id="ShoppingListRows" v-for="item in shoppingCart">
-                                        <td>{{item.name}}</td>
-                                        <td>{{item.amount}}</td>
-                                        <td><input type="checkbox">
-                                            In Cart
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
+                    <div class="table table-striped table-grey table-bordered">
+                        <table id="ShoppingListHeadline">
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Amount</th>
+                                    <th>In Cart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="ShoppingListRows" v-for="item in shoppingCart">
+                                    <td>{{item.name}}</td>
+                                    <td>{{item.amount}}</td>
+                                    <td><input type="checkbox">
+                                        In Cart
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
-                
-              </div>
 
-                <!--Input ny varer template til DB-->
-                <div class="container">
-                    <div class="panel panel-primary border border-success">
-                        <br>
-                        <h4 class="panel-heading">Input new grocery</h4>
-                        <div class="panel-body ">
-                            <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()">
-                                <div class="form-group flex-fill">
-                                    <br>
-                                    <input id="barcodeInput" type="number" class="form-control btn" v-model.number="formData.barcode" placeholder="Barcode #">
-                                    <input id="nameInput" type="text" class="form-control btn" v-model="formData.productName" placeholder="Name">
-                                    <select v-model="selectedSubCategory" class="btn" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
-                                        <option disabled value="">Please select a Sub Category</option>
-                                        <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
-                                    </select>
-                                    <input id="expirationDateInput" type="number" class="form-control btn" v-model.number="formData.expiration" placeholder="Expiration Date">
-                                    <input id="weightInput" type="number" class="form-control btn" v-model.number="formData.weight" placeholder="Weight">
-                                </div>
-                                <button id="add" class="btn btn-primary" v-on:click="add()">Add to IFridge</button>
-                            </form>
-                        </div>
+
+            </div>
+
+            <!--Input ny varer template til DB-->
+            <div class="container">
+                <div class="panel panel-primary border border-success">
+                    <br>
+                    <h4 class="panel-heading">Input new grocery</h4>
+                    <div class="panel-body ">
+                        <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()">
+                            <div class="form-group flex-fill">
+                                <br>
+                                <input id="barcodeInput" type="number" class="form-control btn" v-model.number="formData.barcode" placeholder="Barcode #">
+                                <input id="nameInput" type="text" class="form-control btn" v-model="formData.productName" placeholder="Name">
+                                <select v-model="selectedSubCategory" class="btn" @change="setSubCategoryId(selectedSubCategory.subCategoryId)">
+                                    <option disabled value="">Please select a Sub Category</option>
+                                    <option v-for="item in subCategories" :value="item">{{item.subCategoryName}}</option>
+                                </select>
+                                <input id="expirationDateInput" type="number" class="form-control btn" v-model.number="formData.expiration" placeholder="Expiration Date">
+                                <input id="weightInput" type="number" class="form-control btn" v-model.number="formData.weight" placeholder="Weight">
+                            </div>
+                            <button id="add" class="btn btn-primary" v-on:click="add()">Add to IFridge</button>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <script src="bundle.js"></script>
         </body>
     </body>
-</html>
+</html></div><script src="bundle.js"></script></body></html></body></html>
