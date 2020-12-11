@@ -131,7 +131,9 @@ new Vue({
       missingIngredients: [],
       storedRecipe: null,
       shoppingCart: [],
-      formDataShopping: {name: "", amount: undefined}
+      formDataShopping: {name: "", amount: undefined},
+      //authcode: "53229e6b540c401ea70d06a40a272b59" //Christian
+      authcode: "f41a881d1a3f47ca8de0af384dba58bf" //Maja
          
   },
 
@@ -230,7 +232,7 @@ new Vue({
     async getRecipesByQueryAsync(query : string){
         let basisUrl = "https://api.spoonacular.com/recipes/complexSearch?query="
         //OBS på KEY MAX 150Point per dag
-        let authentication = "&number=10&apiKey=53229e6b540c401ea70d06a40a272b59&addRecipeInformation=true" // Christians
+        let authentication = "&number=10&apiKey="+ this.authcode + "&addRecipeInformation=true" // Christians
         //let authentication = "&number=10&apiKey=f41a881d1a3f47ca8de0af384dba58bf&addRecipeInformation=true"  //Majas
         try{ return axios.get<IRecipeQueryResults>(basisUrl + query + authentication)}
         catch (error: AxiosError) {
@@ -252,7 +254,7 @@ new Vue({
     //ingridienser
     async getRecipeById(id: number){
       let urlId = "https://api.spoonacular.com/recipes/"
-      let diffrentAuthentication = "/ingredientWidget.json?apiKey=53229e6b540c401ea70d06a40a272b59"
+      let diffrentAuthentication = "/ingredientWidget.json?apiKey=" + this.authcode
       try{ return axios.get<IingredientsResponse>(urlId + id + diffrentAuthentication)}
         catch (error: AxiosError) {
         this.message = error.message;
