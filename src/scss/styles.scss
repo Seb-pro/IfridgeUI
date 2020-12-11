@@ -35,15 +35,11 @@ td {
 }
 
 #recipeTitle {
-  display: block;
-  font-size: 1.5em;
-  margin-top: 0.83em;
-  margin-bottom: 0.83em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold;
-  text-decoration: underline;
-  text-align: center;
+  color: green;
+}
+
+#ingredients {
+  background-color: #F7F7F9;
 }
 
 .warningImage {
@@ -74,4 +70,5 @@ ul.no-bullets {
 
 .recipe {
   width: 50%;
+  height: 100%;
 }
