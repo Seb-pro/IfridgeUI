@@ -13,6 +13,26 @@ h1 {
   @extend h2;
 }
 
+button{
+  background-color: #4D4D4D !important;
+}
+
+.deleteButton{
+  background-color: #FFFFFF !important;
+}
+
+#recipeBody{
+  height: 100%;
+}
+
+.banner{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 10rem;
+  margin: 0;
+  padding-top: 0rem;
+  height: 6rem;
+}
+
 th {
   padding: 5px;
   text-align: center;
@@ -34,8 +54,10 @@ td {
   background-color: #d3d3d3;
 }
 
-#recipeTitle {
-  color: green;
+.panel-heading{
+  color: white;
+  background-color: green;
+  
 }
 
 #ingredients {
@@ -70,5 +92,4 @@ ul.no-bullets {
 
 .recipe {
   width: 50%;
-  height: 100%;
 }

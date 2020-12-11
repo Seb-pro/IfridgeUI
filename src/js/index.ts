@@ -275,9 +275,9 @@ new Vue({
           grocerie.forEach(function(grocery: any){
           // hvis der ikke er et match ændres tekst farven fra hvid til rød ellers er den bare hvid
           if(element.name.toLowerCase().includes(grocery.product.subCategory.subCategoryName.toLowerCase())) {
-            element.fontColor = "FFFFFF"
+            element.fontColor = "000000"
           } else {
-            if(element.fontColor != "FFFFFF"){
+            if(element.fontColor != "000000"){
               element.fontColor = "FF0000"
             }           
           }

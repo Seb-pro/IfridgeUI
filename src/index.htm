@@ -19,16 +19,15 @@
         <div
             id="app">
             <!--jumbotron-->
-            <div class="jumbotron jumbotron-fluid">
-                <h1 class="display-2">iFridge</h1>
+            <div class="jumbotron">
+                <h1 class="banner">iFridge</h1>
             </div>
 
             <!--hvad har vi i køleskabet-->
             <div id="whatsInMyfridge" class="panel panel-primary border border-success p-2">
                 <div>
                     <div>
-                        <br>
-                        <h4 class="panel-heading">What's in my fridge?</h4>
+                        <h4 class="p-2 bd-highlight panel-heading">What's in my fridge?</h4>
                     </div>
                     <button id="getAllButton" class="btn btn-primary" v-on:click="getAllGroceries()">Get List</button>
                     <button id="clearlist" class="btn btn-primary" v-on:click="clearList()">Hide List</button>
@@ -61,7 +60,7 @@
 
 
                             <td class="deleteButtonList">
-                                <button id="deleteButton" class="" v-on:click="deleteRow(grocery.productInstanceId)"><img class="icon" src="https://images-ext-1.discordapp.net/external/VjjLfJP7AKm8suY2NaEGAccBkcl5UptFltjGiEUR1is/https/icons-for-free.com/iconfiles/png/512/delete%2Bremove%2Btrash%2Btrash%2Bbin%2Btrash%2Bcan%2Bicon-1320073117929397588.png" alt="Trashcan"></button>
+                                <button id="deleteButton" class="deleteButton" v-on:click="deleteRow(grocery.productInstanceId)"><img class="icon" src="https://images-ext-1.discordapp.net/external/VjjLfJP7AKm8suY2NaEGAccBkcl5UptFltjGiEUR1is/https/icons-for-free.com/iconfiles/png/512/delete%2Bremove%2Btrash%2Btrash%2Bbin%2Btrash%2Bcan%2Bicon-1320073117929397588.png" alt="Trashcan"></button>
                             </td>
                         </tr>
                     </tbody>
@@ -74,8 +73,9 @@
 
                 <!--opskrift liste whats for dinner-->
                 <div class="panel panel-primary col-sm bd-highlight border border-success p-2">
-                    <br>
-                    <h4 class="panel-heading">What's for dinner?</h4>
+                    <div>
+                        <h4 class="p-2 bd-highlight panel-heading">What's for dinner?</h4>
+                    </div>
                     <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="type ingredient or recipe">
                     <br>
                     <button id="getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">Get Recipe</button>
@@ -91,10 +91,10 @@
                     </ul>
                 </div>
                 <!--specifik opskrift-->
-                <div id="recipe" class="recipe d-flex flex-column bd-highlight  panel panel-primary bd-highlight border border-success p-2" v-if="storedRecipe !== null">
-                    <h4 id="recipeTitle" class="p-2 bd-highlight border border-success">
-                        {{storedRecipe.title}}
-                    </h4>
+                <div id="recipe" class="recipe d-flex flex-column bd-highlight container-fluid panel panel-primary bd-highlight border border-success p-2" v-if="storedRecipe !== null">
+                    <div>
+                        <h4 class="p-2 bd-highlight panel-heading">{{storedRecipe.title}}</h4>
+                    </div>
                     <div id="recipeBody" class="p-2 bd-highlight border border-success d-flex flex-row bd-highlight">
                         <div id="summarySteps" class="d-flex flex-column bd-highlight">
                             <div id="summary" class="p-2 bd-highlight">
@@ -140,9 +140,10 @@
                 <br>
 
                 <!--shopping liste-->
-                <div class="panel panel-primary col-sm bd-highlight border border-success">
-                    <br>
-                    <h4 class="panel-heading">Shopping list</h4>
+                <div class="panel panel-primary col-sm bd-highlight border border-success p-2">
+                    
+                    <h4 class="p-2 bd-highlight panel-heading">Shopping list</h4>
+
                     <form class="form-inline" v-on:submit.prevent="addToShopping()">
                         <input class="form-control" id="itemName" v-model="formDataShopping.name" type="text" placeholder="Item">
                         <input class="form-control" id="itemAmount" v-model.number="formDataShopping.amount" type="number" placeholder="Amount">
@@ -174,8 +175,7 @@
             <br>
             <!--Input ny varer template til DB-->
             <div class="panel panel-primary border border-success p-2">
-                <br>
-                <h4 class="panel-heading">Input new grocery</h4>
+                <h4 class="p-2 bd-highlight panel-heading">Input new grocery</h4>
                 <div class="panel-body ">
                     <form class="form-inline" id="groceryInputForm" v-on:submit.prevent="add()">
                         <div class="form-group flex-fill">
