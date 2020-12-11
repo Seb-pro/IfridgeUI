@@ -25,7 +25,7 @@
 
             <!--hvad har vi i køleskabet-->
             <div id="whatsInMyfridge">
-                <div class="panel panel-primary">
+                <div class="panel panel-primary ">
                     <div class="border border-success">
                         <br>
                         <h4 class="panel-heading">What's in my fridge?</h4>
@@ -70,10 +70,11 @@
             <br>
             <!--opskrift, specifik opskrift og shopping list-->
             <div
-                class="panel panel-primary border border-success container-fluid d-flex flex-row bd-highlight mb-3">
+                class="panel panel-primary border-success d-flex flex-row bd-highlight">
 
-                <!--opskrift liste-->
-                <div class="getRecipeBox p-2 bd-highlight border border-success">
+                <!--opskrift liste whats for dinner-->
+                <div class="panel panel-primary col-sm bd-highlight border border-success ">
+                    <br>
                     <h4 class="panel-heading">What's for dinner?</h4>
                     <input id="recipeInput" type="text" class="form-control" v-model="recipeQuery" placeholder="type ingredient or recipe">
                     <button id="getRecipes" class="btn btn-primary" v-on:click="getRecipesByQuery(recipeQuery)">Get Recipe</button>
@@ -88,7 +89,7 @@
                     </ul>
                 </div>
                 <!--specifik opskrift-->
-                <div id="recipe" class="d-flex flex-column bd-highlight mb-3 container-fluid" v-if="storedRecipe !== null">
+                <div id="recipe" class="recipe d-flex flex-column bd-highlight mb-3 panel panel-primary bd-highlight border border-success" v-if="storedRecipe !== null">
                     <div id="recipeTitle" class="p-2 bd-highlight border border-success">
                         {{storedRecipe.title}}
                     </div>
@@ -112,29 +113,31 @@
                                 </ul>
                             </div>
                         </div>
+                        <div>
                         <div id="ingredients" class="border border-success p-2 bd-highlight">
+                            <div id="picture" class="border border-success">
+                                <img v-bind:src="storedRecipe.image" alt="storedRecipe.title">
+                            </div>
                             <h5>Ingredients:
                             </h5>
-                            <ul v-if="missingIngredients.length > 0">
-                                <li :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
-                                    <div>
-                                        {{ingredient.amount.metric.value}}
-                                        {{ingredient.amount.metric.unit}}
-                                        {{ingredient.name}}
-                                    </div>
-                                </li>
-                            </ul>
-                            <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
-                        </div>
-                        <div id="picture" class="border border-success">
-                            <img v-bind:src="storedRecipe.image" alt="storedRecipe.title">
+                                <ul v-if="missingIngredients.length > 0">
+                                    <li :style="{color: '#'+ingredient.fontColor}" id="IngredientList" v-for="ingredient in missingIngredients">
+                                        <div>
+                                            {{ingredient.amount.metric.value}}
+                                            {{ingredient.amount.metric.unit}}
+                                            {{ingredient.name}}
+                                        </div>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary" id="SendToShoppingList" v-on:click="sendToShoppingList">Send To shopping list</button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <br>
 
                 <!--shopping liste-->
-                <div class="panel panel-primary row col-sm p-2 bd-highlight border border-success">
+                <div class="panel panel-primary col-sm bd-highlight border border-success">
                     <br>
                     <h4 class="panel-heading">Shopping list</h4>
                     <form class="form-inline" v-on:submit.prevent="addToShopping()">
@@ -165,7 +168,7 @@
                     </div>
                 </div>
             </div>
-
+            <br>
             <!--Input ny varer template til DB-->
             <div class="panel panel-primary border border-success">
                 <br>
