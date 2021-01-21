@@ -54,11 +54,9 @@
                             <td>{{grocery.dateAdded}}</td>
                             <td class="expirationList">{{daysToExpireToString(grocery.daysToExpire)}}</td>
                             <td class="expirationStatus">
-                                <img class="warningImage" v-if="grocery.expireWarning" src="https://www.52oaks.com/app/uploads/2017/01/Achtung.svg_-768x673.png" alt="Item is about to expire">
+                                <img class="warningImage" v-if="grocery.expireWarning" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Achtung.svg/1024px-Achtung.svg.png" alt="Item is about to expire">
                                 <h6 v-else>The item is still good</h6>
                             </td>
-
-
                             <td class="deleteButtonList">
                                 <button id="deleteButton" class="deleteButton" v-on:click="deleteRow(grocery.productInstanceId)"><img class="icon" src="https://images-ext-1.discordapp.net/external/VjjLfJP7AKm8suY2NaEGAccBkcl5UptFltjGiEUR1is/https/icons-for-free.com/iconfiles/png/512/delete%2Bremove%2Btrash%2Btrash%2Bbin%2Btrash%2Bcan%2Bicon-1320073117929397588.png" alt="Trashcan"></button>
                             </td>
